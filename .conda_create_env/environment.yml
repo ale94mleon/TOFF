@@ -1,0 +1,15 @@
+name: small
+channels:
+  - conda-forge
+dependencies:
+  - pip
+  - python==3.*
+  - openmm
+  - nbsphinx
+  - sphinx
+  - openff-toolkit
+  - pip:
+    - parmed
+    - pyyaml
+    - recommonmark
+    - sphinx_rtd_theme
