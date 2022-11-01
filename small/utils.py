@@ -11,7 +11,7 @@ import parmed
 from typing import List, Iterable
 
 """
-This module was highly inspired in https://github.com/aniketsh/OpenFF/blob/82a2b5803e36b72f3525e3b8631cf256fbd8e35a/openff_topology.py
+This module was strong inspired in https://github.com/aniketsh/OpenFF/blob/82a2b5803e36b72f3525e3b8631cf256fbd8e35a/openff_topology.py
 offt
 """
 def confgen(mol: Chem.rdchem.Mol):
