@@ -46,8 +46,8 @@ def get_rdkit_mol(input_path_mol:str, gen_conformer:bool = False):
         #. mol2
         #. pdb
     gen_conformer : bool, by default False
-        If True the :meth:`offt.utils.confgen` will be applied on the molecule in order to generate a conformation.
-        For .smi and .inchi entrance :meth:`offt.utils.confgen` is always called.
+        If True the :meth:`small.utils.confgen` will be applied on the molecule in order to generate a conformation.
+        For .smi and .inchi entrance :meth:`small.utils.confgen` is always called.
     
     Returns
     -------
@@ -88,7 +88,26 @@ def get_rdkit_mol(input_path_mol:str, gen_conformer:bool = False):
     
     return mol
 
-def topology_writer(ligand_structure:parmed.structure.Structure, ext_types:List[str] = None, out_dir:str = '.', overwrite = False) -> None:
+def topology_writer(ligand_structure:parmed.structure.Structure, ext_types:List[str] = None, overwrite = False, out_dir:str = '.') -> None:
+    """A small wrapper around the `save` method of :meth:`parmed.structure.Structure`
+
+    Parameters
+    ----------
+    ligand_structure : parmed.structure.Structure
+        _description_
+    ext_types : List[str], optional
+        Any extension from:
+        'pdb', 'pqr', 'cif','pdbx',
+        'parm7', 'prmtop', 'psf', 'top',
+        'gro', 'mol2', '.mol3', 'crd',
+        'rst7', 'inpcrd', 'restrt', 'ncrst'
+        by default None which means that it will output: 'top', 'pdb', 'gro' files
+    overwrite : bool, optional
+        If True it will overwrite existing output files, by default False
+    out_dir : str, optional
+        Where the files will be written, by default '.'
+    """
+
     valid_ext_types = [
                 'pdb', 'pqr', 'cif','pdbx',
                 'parm7', 'prmtop', 'psf', 'top',
@@ -107,14 +126,55 @@ def topology_writer(ligand_structure:parmed.structure.Structure, ext_types:List[
             warnings.warn(f"{ext_type} is not a valid extension type. Only: {valid_ext_types}")
 
 def get_partial_charges(ligand_structure:parmed.structure.Structure):
+    """get the partial charges from a :meth:`parmed.structure.Structure` object.
+
+    Parameters
+    ----------
+    ligand_structure : parmed.structure.Structure
+        Here is the Structure object were the partial charges will be obtained.
+
+    Returns
+    -------
+    numpy.array
+        A numpy array of partial charges
+    """
     return np.array([atom.charge for atom in ligand_structure])
 
 def set_partial_charges(ligand_structure:Chem.rdchem.Mol, partial_charges:Iterable):
+    """Set new partial charges to a :meth:`parmed.structure.Structure` object
+
+    Parameters
+    ----------
+    ligand_structure : Chem.rdchem.Mol
+        Here is the Structure object were the partial charges will be set.
+    partial_charges : Iterable
+        New partial charges to set. Should have the same len as atoms in ligand_structure
+
+    Returns
+    -------
+    Chem.rdchem.Mol
+        The ligand_structure with the new set of partial charges.
+    """
     for charge, atom in zip(partial_charges, ligand_structure):
         atom.charge = charge
     return ligand_structure
 
 def charge_sanitizer(rdkit_mol:Chem.rdchem.Mol, ligand_structure:parmed.structure.Structure):
+    """Check and correct (if needed) if the formal charge from the rdkit_mol is not the same as the sum of
+    of the partial charges of the ligand_structure.
+
+    Parameters
+    ----------
+    rdkit_mol : Chem.rdchem.Mol
+        A rdkit mol representation of ligand_structure.
+    ligand_structure : parmed.structure.Structure
+        The Structure where the charges must be check.
+
+    Returns
+    -------
+    parmed.structure.Structure
+        ligand_structure with the corrected partial charges
+    """
     # Get formal charge
     formal_charge = Chem.GetFormalCharge(rdkit_mol)
     
@@ -144,6 +204,8 @@ def charge_sanitizer(rdkit_mol:Chem.rdchem.Mol, ligand_structure:parmed.structur
            
 
 class Parameterize:
+    """This is the main class for the parameterization
+    """
 
     def __init__(
             self,
@@ -153,6 +215,30 @@ class Parameterize:
             overwrite:bool = False,
             out_dir:str = '.',
             ) -> None:
+        """This is the constructor of the class.
+
+        Parameters
+        ----------
+        force_field_code : str, optional
+            Any valid Open Force Field string representation.
+            Visit the `GitHub repo <https://github.com/openforcefield/openff-forcefields>`__ for
+            more information, by default 'openff_unconstrained-2.0.0.offxml'
+        ext_types : List[str], optional
+            Any extension from:
+            'pdb', 'pqr', 'cif','pdbx',
+            'parm7', 'prmtop', 'psf', 'top',
+            'gro', 'mol2', '.mol3', 'crd',
+            'rst7', 'inpcrd', 'restrt', 'ncrst'
+            by default None which means that it will output: 'top', 'pdb', 'gro' files
+        hmr_factor : float, optional
+            This is a factor in which the mass of the hydrogen atoms
+            will be increased using the mass of the linked heavy atoms.
+            Useful to increases the integrating time step to 4 fs, by default None
+        overwrite : bool, optional
+            If True it will overwrite existing output files, by default False
+        out_dir : str, optional
+            Where the files will be written, by default '.'
+        """
 
         self.force_field_code = force_field_code
         self.ext_types = ext_types
@@ -168,6 +254,28 @@ class Parameterize:
         return f"{self.__class__.__name__}(force_field_code = {self.force_field_code}, ext_types = [{ext_types_to_print}], hmr_factor = {self.hmr_factor}, overwrite = {self.overwrite}, out_dir = {self.out_dir})"
     
     def __call__(self,  input_mol, mol_resi_name:str = "MOL", gen_conformer:bool = False):
+        """This class is callable. And this is its implementation.
+        it will return the specified files (ext_types in __init__) in the directory out_dir.
+
+        Parameters
+        ----------
+        input_mol : str, Chem.rdchem.Mol molecule
+            Could be a path to any file compatible with :meth:`small.utils.get_rdkit_mol`:
+            (.inchi, .smi, .mol, .mol2, .pdb)
+            or any valid RDKit molecule  
+        mol_resi_name : str, optional
+            The residue name that will have the ligand. It is recommended to use 
+            name no longer than 4 characters, by default "MOL"
+        gen_conformer : bool, optional
+            If True, a conformer will be generated for input_mol, by default False
+
+        Raises
+        ------
+        Exception
+            Non supported input_mol
+        Exception
+            Some exceptions occurred getting the topologies.
+        """
         
         if isinstance(input_mol, Chem.rdchem.Mol):
             rdkit_mol = Chem.AddHs(input_mol)
