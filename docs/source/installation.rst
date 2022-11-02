@@ -12,7 +12,7 @@ Requirements:
 
 .. note::
 
-    If you have all dependencies already installed you could try with ``pip install small`` directly.
+    If you have all dependencies already installed you could try with ``pip install TOFF`` directly.
     But if it is not the case or some version conflicts occurred, think about installed in a isolated environment
     as it will be show in brief.
 
@@ -29,8 +29,8 @@ Create conda environment and install conda dependencies
 
 .. code-block:: bash
 
-    conda create -n small
-    conda activate small
+    conda create -n TOFF
+    conda activate TOFF
 
 Then install the dependencies libraries:
 
@@ -46,14 +46,14 @@ pip install
 .. code-block:: bash
 
     # To get the last "stable" version (strongly recommended). This project is still in beta state.
-    pip install small
+    pip install TOFF
 
 or:
 
 .. code-block:: bash
 
     # To get the version on development (not recommended)
-    pip install git+https://github.com/ale94mleon/small.git@main
+    pip install git+https://github.com/ale94mleon/TOFF.git@main
 
 Via conda
 ---------
@@ -62,9 +62,9 @@ We will create a new environment ``conda``:
 
 .. code-block:: bash
 
-    conda create -n small
-    conda activate small
-    conda install -c ale94mleon -c conda-forge small
+    conda create -n TOFF
+    conda activate TOFF
+    conda install -c ale94mleon -c conda-forge TOFF
 
 If some dependencies are missing, please installed through pip. Some of them could be:
 

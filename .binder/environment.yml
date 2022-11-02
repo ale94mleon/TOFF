@@ -1,4 +1,4 @@
-name: small
+name: toff
 channels:
   - conda-forge
 dependencies:
@@ -7,6 +7,6 @@ dependencies:
   - openmm
   - openff-toolkit
   - pip:
-    - small
+    - toff
     - requests
     - matplotlib

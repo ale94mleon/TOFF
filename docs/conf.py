@@ -20,7 +20,7 @@ from jupyter_client import kernelspec
 
 # -- Project information -----------------------------------------------------
 
-project = 'small'
+project = 'TOFF'
 copyright = '2022, Alejandro Martínez León'
 author = 'Alejandro Martínez León'
 
@@ -30,7 +30,7 @@ author = 'Alejandro Martínez León'
 
 # -- General configuration ---------------------------------------------------
 
-github_doc_root = 'https://github.com/ale94mleon/small/tree/main/docs'
+github_doc_root = 'https://github.com/ale94mleon/TOFF/tree/main/docs'
 needs_sphinx = '4.1.2'
 
 # Add any Sphinx extension module names here, as strings. They can be

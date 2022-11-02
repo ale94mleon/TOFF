@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-For information of small:
-    Docs: https://small.readthedocs.io/en/latest/
-    Source Code: https://github.com/ale94mleon/small
+For information of TOFF:
+    Docs: https://TOFF.readthedocs.io/en/latest/
+    Source Code: https://github.com/ale94mleon/TOFF
 """
 
-from small import __version__, Parameterize
+from toff import __version__, Parameterize
 import yaml, argparse, warnings
 
 def __parameterize_cmd():
@@ -19,10 +19,10 @@ def __parameterize_cmd():
     parser.add_argument(
         '-v', '--version',
         action='version',
-        version=f"small: {__version__}")
+        version=f"toff: {__version__}")
     args = parser.parse_args()
 
-    print(f"You are using small:{__version__}")
+    print(f"You are using toff:{__version__}")
     with open(args.yaml_file, 'r') as c:
         Config = yaml.safe_load(c)
     InitKwargs = ['force_field_code','ext_types','hmr_factor','overwrite','out_dir']

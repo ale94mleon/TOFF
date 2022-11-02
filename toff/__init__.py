@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-For information of small:
-    Docs: https://small.readthedocs.io/en/latest/
-    Source Code: https://github.com/ale94mleon/small
+For information of TOFF:
+    Docs: https://TOFF.readthedocs.io/en/latest/
+    Source Code: https://github.com/ale94mleon/TOFF
 """
 from ._version import __version__, __version_tuple__
 from .utils import *

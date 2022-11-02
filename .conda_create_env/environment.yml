@@ -1,4 +1,4 @@
-name: small
+name: toff
 channels:
   - conda-forge
 dependencies:

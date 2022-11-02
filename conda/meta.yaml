@@ -2,7 +2,7 @@
 
 # Building: conda build -c conda-forge  conda/
 package:
-  name: small
+  name: toff
   version: {{ data['version'] }}
 
 source:
@@ -21,7 +21,7 @@ requirements:
 
 test:
   imports:
-    - small
+    - toff
 
 about:
   home: {{ data['url'] }}

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from small import Parameterize
+from toff import Parameterize
 import tempfile, os, yaml
 import subprocess # nosec
 from rdkit import Chem

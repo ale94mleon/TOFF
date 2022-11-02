@@ -1,9 +1,9 @@
 Citation
 --------
 
-If you use *small* in your research, please cite the DOI corresponding to the release version you've used:
+If you use *TOFF* in your research, please cite the DOI corresponding to the release version you've used:
 
-.. list-table:: small releases
+.. list-table:: TOFF releases
     :widths: 10 10 15
     :align: center
 

@@ -43,8 +43,8 @@ def get_rdkit_mol(input_path_mol:str, gen_conformer:bool = False):
         #. mol
         #. mol2
     gen_conformer : bool, by default False
-        If True the :meth:`small.utils.confgen` will be applied on the molecule in order to generate a conformation.
-        For .smi and .inchi entrance :meth:`small.utils.confgen` is always called.
+        If True the :meth:`toff.utils.confgen` will be applied on the molecule in order to generate a conformation.
+        For .smi and .inchi entrance :meth:`toff.utils.confgen` is always called.
 
     Returns
     -------
@@ -87,7 +87,7 @@ def get_rdkit_mol(input_path_mol:str, gen_conformer:bool = False):
     return mol
 
 def topology_writer(ligand_structure:parmed.structure.Structure, ext_types:List[str] = None, overwrite = False, out_dir:str = '.') -> None:
-    """A small wrapper around the `save` method of :meth:`parmed.structure.Structure`
+    """A toff wrapper around the `save` method of :meth:`parmed.structure.Structure`
 
     Parameters
     ----------
@@ -260,7 +260,7 @@ class Parameterize:
         Parameters
         ----------
         input_mol : str, Chem.rdchem.Mol molecule
-            Could be a path to any file compatible with :meth:`small.utils.get_rdkit_mol`:
+            Could be a path to any file compatible with :meth:`toff.utils.get_rdkit_mol`:
             (.inchi, .smi, .mol, .mol2)
             or any valid RDKit molecule
         mol_resi_name : str, optional
