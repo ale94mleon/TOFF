@@ -6,10 +6,7 @@ dependencies:
   - python==3.*
   - openmm
   - openff-toolkit
-  - nbsphinx
-  - sphinx 
   - pip:
-    - parmed
-    - pyyaml
-    - recommonmark
-    - sphinx_rtd_theme
+    - small
+    - requests
+    - matplotlib
