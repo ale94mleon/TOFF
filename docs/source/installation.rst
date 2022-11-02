@@ -54,24 +54,3 @@ or:
 
     # To get the version on development (not recommended)
     pip install git+https://github.com/ale94mleon/TOFF.git@main
-
-Via conda
----------
-
-We will create a new environment ``conda``:
-
-.. code-block:: bash
-
-    conda create -n TOFF
-    conda activate TOFF
-    conda install -c ale94mleon -c conda-forge TOFF
-
-If some dependencies are missing, please installed through pip. Some of them could be:
-
-.. code-block:: bash
-
-    pip install parmed pyyaml
-
-.. note::
-
-   In the future it will be deployed inside conda-forge.

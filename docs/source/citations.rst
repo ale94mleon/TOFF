@@ -12,5 +12,5 @@ If you use *TOFF* in your research, please cite the DOI corresponding to the rel
       - DOI
     * - Any
       - 2022-07-10
-      - ..  image:: https://zenodo.org/badge/496163299.svg
-            :target: https://zenodo.org/badge/latestdoi/496163299
+      - ..  image:: https://zenodo.org/badge/560614920.svg
+            :target: https://zenodo.org/badge/latestdoi/560614920
