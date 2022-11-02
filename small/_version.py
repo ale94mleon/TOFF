@@ -9,4 +9,4 @@ if __pre_version_tuple__:
     __version_tuple__ = tuple(list(__main_version_tuple__) + list(__pre_version_tuple__))
     __version__ = '.'.join([str(i) for i in __main_version_tuple__]) + f'-{__pre_version_tuple__[0]}' + '.'.join([str(i) for i in __pre_version_tuple__[1:]])
 else:
-     __version__ = '.'.join([str(i) for i in __main_version_tuple__])
+    __version__ = '.'.join([str(i) for i in __main_version_tuple__])

@@ -50,5 +50,6 @@ def test_cmd_Parameterize():
     if returncode != 0:
         raise RuntimeError(process.stderr)
 
+
 if __name__ == '__main__':
     test_cmd_Parameterize()

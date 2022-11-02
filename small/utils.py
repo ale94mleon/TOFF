@@ -10,9 +10,9 @@ from openmm.app import PDBFile
 import parmed
 from typing import List, Iterable
 
-"""
-This module was strongly inspired in https://github.com/aniketsh/OpenFF/blob/82a2b5803e36b72f3525e3b8631cf256fbd8e35a/openff_topology.py
-"""
+
+#This module was strongly inspired in https://github.com/aniketsh/OpenFF/blob/82a2b5803e36b72f3525e3b8631cf256fbd8e35a/openff_topology.py
+
 def confgen(mol: Chem.rdchem.Mol):
     """Create a 3D model from a smiles and return a pdbqt string and, a mol if ``return_mol = True``.
 
@@ -38,8 +38,7 @@ def get_rdkit_mol(input_path_mol:str, gen_conformer:bool = False):
     ----------
     input_path_mol : str
         The path were the file molecule is. Only the foll, following extensions are valid:
-        
-        #. inchi (only the first line of the file will be considered and should be a valid InChi string)   
+        #. inchi (only the first line of the file will be considered and should be a valid InChi string)
         #. smi (only the first line of the file will be considered and should be a valid SMILES string)
         #. mol
         #. mol2
@@ -69,7 +68,7 @@ def get_rdkit_mol(input_path_mol:str, gen_conformer:bool = False):
     elif extension == 'mol':
         mol = Chem.MolFromMolFile(input_path_mol)
     elif extension == 'mol2':
-        mol = Chem.MolFromMol2File(input_path_mol)    
+        mol = Chem.MolFromMol2File(input_path_mol)
     # elif extension == 'pdb':
     #     mol = Chem.MolFromPDBFile(input_path_mol)
     else:
@@ -196,7 +195,7 @@ def charge_sanitizer(rdkit_mol:Chem.rdchem.Mol, ligand_structure:parmed.structur
         
         # Set corrected charges on the ligand_structure
         ligand_structure = set_partial_charges(ligand_structure, new_partial_charges)
-        print(f"After correction: partial_charge - formal_charge = {round(get_partial_charges(ligand_structure).sum() - formal_charge, 3)}.")  
+        print(f"After correction: partial_charge - formal_charge = {round(get_partial_charges(ligand_structure).sum() - formal_charge, 3)}.")
     # else:
     #     print("No charge correction needed.")
     return ligand_structure
@@ -250,7 +249,9 @@ class Parameterize:
         if not ext_types_to_print:
             ext_types_to_print = ['top', 'pdb', 'gro']
         ext_types_to_print = ' '.join(ext_types_to_print)
-        return f"{self.__class__.__name__}(force_field_code = {self.force_field_code}, ext_types = [{ext_types_to_print}], hmr_factor = {self.hmr_factor}, overwrite = {self.overwrite}, out_dir = {self.out_dir})"
+        return f"{self.__class__.__name__}(force_field_code = {self.force_field_code}, "\
+            f"ext_types = [{ext_types_to_print}], hmr_factor = {self.hmr_factor}, "\
+            f"overwrite = {self.overwrite}, out_dir = {self.out_dir})"
     
     def __call__(self,  input_mol, mol_resi_name:str = "MOL", gen_conformer:bool = False):
         """This class is callable. And this is its implementation.
@@ -261,9 +262,9 @@ class Parameterize:
         input_mol : str, Chem.rdchem.Mol molecule
             Could be a path to any file compatible with :meth:`small.utils.get_rdkit_mol`:
             (.inchi, .smi, .mol, .mol2)
-            or any valid RDKit molecule  
+            or any valid RDKit molecule
         mol_resi_name : str, optional
-            The residue name that will have the ligand. It is recommended to use 
+            The residue name that will have the ligand. It is recommended to use
             name no longer than 4 characters, by default "MOL"
         gen_conformer : bool, optional
             If True, a conformer will be generated for input_mol, by default False
@@ -321,6 +322,7 @@ class Parameterize:
             out_dir = self.out_dir,
             overwrite = self.overwrite,
         )
+
 
 if __name__ == '__main__':
     pass
