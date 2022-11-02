@@ -26,7 +26,7 @@ TOFF
 Description
 -----------
 
-**TOFF** (Topologies from OpenFF) is a python package to get topologies from the OpenFF initiative. It was strong inspired in this `Aniket's script <https://github.com/aniketsh/OpenFF/blob/82a2b5803e36b72f3525e3b8631cf256fbd8e35a/openff_topology.py>`__.
+**TOFF** (Topologies from OpenFF) is a python package to get topologies from the OpenFF initiative. It was strongly inspired in this `Aniket's script <https://github.com/aniketsh/OpenFF/blob/82a2b5803e36b72f3525e3b8631cf256fbd8e35a/openff_topology.py>`__.
 
 
 You can try it out prior to any installation on `Binder <https://mybinder.org/v2/gh/ale94mleon/TOFF/HEAD?labpath=%2Fdocs%2Fnotebooks%2F>`__.
