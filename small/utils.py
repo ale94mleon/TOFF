@@ -11,8 +11,7 @@ import parmed
 from typing import List, Iterable
 
 """
-This module was strong inspired in https://github.com/aniketsh/OpenFF/blob/82a2b5803e36b72f3525e3b8631cf256fbd8e35a/openff_topology.py
-offt
+This module was strongly inspired in https://github.com/aniketsh/OpenFF/blob/82a2b5803e36b72f3525e3b8631cf256fbd8e35a/openff_topology.py
 """
 def confgen(mol: Chem.rdchem.Mol):
     """Create a 3D model from a smiles and return a pdbqt string and, a mol if ``return_mol = True``.
