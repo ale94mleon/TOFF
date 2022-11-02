@@ -110,7 +110,7 @@ def topology_writer(ligand_structure:parmed.structure.Structure, ext_types:List[
     valid_ext_types = [
                 'pdb', 'pqr', 'cif','pdbx',
                 'parm7', 'prmtop', 'psf', 'top',
-                'gro', 'mol2', '.mol3', 'crd',
+                'gro', 'mol2', 'mol3', 'crd',
                 'rst7', 'inpcrd', 'restrt', 'ncrst',
                 ]
     if not ext_types:
