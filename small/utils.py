@@ -45,7 +45,7 @@ def get_rdkit_mol(input_path_mol:str, gen_conformer:bool = False):
     gen_conformer : bool, by default False
         If True the :meth:`small.utils.confgen` will be applied on the molecule in order to generate a conformation.
         For .smi and .inchi entrance :meth:`small.utils.confgen` is always called.
-    
+
     Returns
     -------
     Chem.rdchem.Mol

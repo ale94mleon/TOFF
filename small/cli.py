@@ -33,7 +33,7 @@ def __parameterize_cmd():
         raise RuntimeError("Not input_mol parameter provided in the configuration yaml file.")
     elif UserExtraNonValidKwargs:
         warnings.warn(f"Parameters: [{' '.join(UserExtraNonValidKwargs)}] is/are not valid and therefore discarded.")
-    
+
     UserInitKwargs = {kwarg: Config[kwarg] for kwarg in Config if kwarg in InitKwargs}
     UserCallKwargs = {kwarg: Config[kwarg] for kwarg in Config if kwarg in CallKwargs}
     parameterizer = Parameterize(**UserInitKwargs)
