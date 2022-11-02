@@ -43,7 +43,6 @@ def get_rdkit_mol(input_path_mol:str, gen_conformer:bool = False):
         #. smi (only the first line of the file will be considered and should be a valid SMILES string)
         #. mol
         #. mol2
-        #. pdb
     gen_conformer : bool, by default False
         If True the :meth:`small.utils.confgen` will be applied on the molecule in order to generate a conformation.
         For .smi and .inchi entrance :meth:`small.utils.confgen` is always called.
@@ -63,18 +62,19 @@ def get_rdkit_mol(input_path_mol:str, gen_conformer:bool = False):
 
     if extension == 'inchi':
         with open(input_path_mol, 'r') as f:
-            mol = Chem.MolFromInchi(f.readlines[0])
+            mol = Chem.MolFromInchi(f.readline())
     elif extension == 'smi':
         with open(input_path_mol, 'r') as f:
-            mol = Chem.MolFromSmiles(f.readlines[0])
+            mol = Chem.MolFromSmiles(f.readline())
     elif extension == 'mol':
         mol = Chem.MolFromMolFile(input_path_mol)
     elif extension == 'mol2':
         mol = Chem.MolFromMol2File(input_path_mol)    
-    elif extension == 'pdb':
-        mol = Chem.MolFromPDBFile(input_path_mol)
+    # elif extension == 'pdb':
+    #     mol = Chem.MolFromPDBFile(input_path_mol)
     else:
-        raise NotImplementedError(f"Only: *.inchi, *.smi, *.pdb, *.mol, *.mol2 are valid extensions. But *.{extension} was provided")
+        raise NotImplementedError(f"Only: *.inchi, *.smi, *.mol, *.mol2 are valid extensions. But *.{extension} was provided")
+        # raise NotImplementedError(f"Only: *.inchi, *.smi, *.pdb, *.mol, *.mol2 are valid extensions. But *.{extension} was provided")
     
     mol = Chem.AddHs(mol)
     if extension in ['inchi', 'smi']:
@@ -260,7 +260,7 @@ class Parameterize:
         ----------
         input_mol : str, Chem.rdchem.Mol molecule
             Could be a path to any file compatible with :meth:`small.utils.get_rdkit_mol`:
-            (.inchi, .smi, .mol, .mol2, .pdb)
+            (.inchi, .smi, .mol, .mol2)
             or any valid RDKit molecule  
         mol_resi_name : str, optional
             The residue name that will have the ligand. It is recommended to use 
