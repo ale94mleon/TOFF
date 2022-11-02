@@ -74,7 +74,7 @@ def get_rdkit_mol(input_path_mol:str, gen_conformer:bool = False):
     else:
         raise NotImplementedError(f"Only: *.inchi, *.smi, *.mol, *.mol2 are valid extensions. But *.{extension} was provided")
         # raise NotImplementedError(f"Only: *.inchi, *.smi, *.pdb, *.mol, *.mol2 are valid extensions. But *.{extension} was provided")
-    
+
     mol = Chem.AddHs(mol)
     if extension in ['inchi', 'smi']:
         mol = confgen(mol)

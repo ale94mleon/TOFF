@@ -1,6 +1,27 @@
 small
 =======
 
+.. list-table::
+    :widths: 12 35
+
+    * - **Documentation**
+      - |docs|
+    * - **Tutorials**
+      - |binder|
+    * - **CI/CD**
+      - |tests| |codecov| |codacy| |CodeQL|
+    * - **Build**
+      - |pypi-version| |conda|
+    * - **Source Code**
+      - |github|
+    * - **Python Versions**
+      - |pyversions|
+    * - **Dependencies**
+      - |rdkit| |OpenMM| |OpenFF| |ParmEd|
+    * - **License**
+      - |license|
+    * - **Downloads**
+      - |downloads|
 
 Description
 -----------
@@ -40,39 +61,41 @@ Please refer to the `citation page <https://small.readthedocs.io/en/latest/sourc
 ..  |tests| image:: https://github.com/ale94mleon/small/actions/workflows/tests.yml/badge.svg
     :target: https://github.com/ale94mleon/small/actions/workflows/tests.yml
     :alt: tests
-..  |codecov| .. image:: https://codecov.io/gh/ale94mleon/small/branch/main/graph/badge.svg?token=1lAwiIgp3z 
+..  |codecov| image:: https://codecov.io/gh/ale94mleon/small/branch/main/graph/badge.svg?token=1lAwiIgp3z 
     :target: https://codecov.io/gh/ale94mleon/small
     :alt: codecov
-
-..  |codacy| image:: https://app.codacy.com/project/badge/Grade/08a3ac7c13df4339b8a1da0e8d31810e
-    :target: https://www.codacy.com/gh/ale94mleon/MolDrug/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ale94mleon/MolDrug&amp;utm_campaign=Badge_Grade
+..  |codacy| image:: https://app.codacy.com/project/badge/Grade/53c53c810b3c4767ab76f5d622ec6aef
+    :target: https://www.codacy.com/gh/ale94mleon/small/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ale94mleon/small&amp;utm_campaign=Badge_Grade
     :alt: codacy 
-..  |CodeQL| image:: https://github.com/ale94mleon/MolDrug/actions/workflows/codeql-analysis.yml/badge.svg
-    :target: https://github.com/ale94mleon/MolDrug/actions/workflows/codeql-analysis.yml
+..  |CodeQL| image:: https://github.com/ale94mleon/small/actions/workflows/codeql-analysis.yml/badge.svg
+    :target: https://github.com/ale94mleon/small/actions/workflows/codeql-analysis.yml
     :alt: CodeQL
-..  |pypi-version|  image:: https://img.shields.io/pypi/v/moldrug.svg
-    :target: https://pypi.python.org/pypi/moldrug/
+..  |pypi-version|  image:: https://img.shields.io/pypi/v/small.svg
+    :target: https://pypi.python.org/pypi/small/
     :alt: pypi-version
-..  |conda|  image:: https://anaconda.org/ale94mleon/moldrug/badges/version.svg
-    :target: https://anaconda.org/ale94mleon/moldrug
+..  |conda|  image:: https://anaconda.org/ale94mleon/small/badges/version.svg
+    :target: https://anaconda.org/ale94mleon/small
     :alt: conda
 ..  |github|    image:: https://badgen.net/badge/icon/github?icon=github&label
-    :target: https://github.com/ale94mleon/moldrug
+    :target: https://github.com/ale94mleon/small
     :alt: GitHub-small
-..  |pyversions|    image:: https://img.shields.io/pypi/pyversions/moldrug.svg
-    :target: https://pypi.python.org/pypi/moldrug/
+..  |pyversions|    image:: https://img.shields.io/pypi/pyversions/small.svg
+    :target: https://pypi.python.org/pypi/small/
 ..  |rdkit| image:: https://img.shields.io/static/v1?label=Powered%20by&message=RDKit&color=3838ff&style=flat&logo=data:image/x-icon;base64,AAABAAEAEBAQAAAAAABoAwAAFgAAACgAAAAQAAAAIAAAAAEAGAAAAAAAAAMAABILAAASCwAAAAAAAAAAAADc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nz/FBT/FBT/FBT/FBT/FBT/FBTc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nz/FBT/PBT/PBT/PBT/PBT/PBT/PBT/FBTc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nz/FBT/PBT/ZGT/ZGT/ZGT/ZGT/ZGT/ZGT/PBT/FBTc3Nzc3Nzc3Nzc3Nzc3Nz/FBT/PBT/ZGT/ZGT/ZGT/ZGT/ZGT/ZGT/ZGT/ZGT/PBT/FBTc3Nzc3Nzc3Nz/FBT/PBT/ZGT/ZGT/ZGT/jIz/jIz/jIz/jIz/ZGT/ZGT/ZGT/PBT/FBTc3Nzc3Nz/FBT/PBT/ZGT/ZGT/jIz/jIz/jIz/jIz/jIz/jIz/ZGT/ZGT/PBT/FBTc3Nzc3Nz/FBT/PBT/ZGT/ZGT/jIz/jIz/tLT/tLT/jIz/jIz/ZGT/ZGT/PBT/FBTc3Nzc3Nz/FBT/PBT/ZGT/ZGT/jIz/jIz/tLT/tLT/jIz/jIz/ZGT/ZGT/PBT/FBTc3Nzc3Nz/FBT/PBT/ZGT/ZGT/jIz/jIz/jIz/jIz/jIz/jIz/ZGT/ZGT/PBT/FBTc3Nzc3Nz/FBT/PBT/ZGT/ZGT/ZGT/jIz/jIz/jIz/jIz/ZGT/ZGT/ZGT/PBT/FBTc3Nzc3Nzc3Nz/FBT/PBT/ZGT/ZGT/ZGT/ZGT/ZGT/ZGT/ZGT/ZGT/PBT/FBTc3Nzc3Nzc3Nzc3Nzc3Nz/FBT/PBT/ZGT/ZGT/ZGT/ZGT/ZGT/ZGT/PBT/FBTc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nz/FBT/PBT/PBT/PBT/PBT/PBT/PBT/FBTc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nz/FBT/FBT/FBT/FBT/FBT/FBTc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nz/////+B////AP///gB///wAP//4AB//+AAf//gAH//4AB//+AAf//gAH//8AD///gB///8A////gf////////
     :target: https://www.rdkit.org/docs/index.html
     :alt: rdkit
-..  |meeko| image:: https://img.shields.io/static/v1?label=Powered%20by&message=Meeko&color=6858ff&style=flat
-    :target: https://github.com/forlilab/Meeko
-    :alt: Meeko
-..  |crem| image:: https://img.shields.io/static/v1?label=Powered%20by&message=CReM&color=9438ff&style=flat
-    :target: https://crem.readthedocs.io/en/latest/
-    :alt: crem
-..  |license| image:: https://badgen.net/pypi/license/moldrug/
-    :target: https://pypi.python.org/pypi/moldrug/
+..  |OpenMM| image:: https://img.shields.io/static/v1?label=Powered%20by&message=OpenMM&color=6858ff&style=flat
+    :target: http://docs.openmm.org/latest/userguide/
+    :alt: OpenMM
+..  |OpenFF| image:: https://img.shields.io/static/v1?label=Powered%20by&message=OpenFF&color=9438ff&style=flat
+    :target: https://docs.openforcefield.org/projects/toolkit/en/latest/
+    :alt: OpenFF
+..  |ParmEd| image:: https://img.shields.io/static/v1?label=Powered%20by&message=ParmEd&color=2038ff&style=flat
+    :target: https://parmed.github.io/ParmEd/html/'
+    :alt: ParmEd
+..  |license| image:: https://badgen.net/pypi/license/small/
+    :target: https://pypi.python.org/pypi/small/
     :alt: license
-..  |downloads| image:: https://static.pepy.tech/personalized-badge/moldrug?period=total&units=international_system&left_color=grey&right_color=brightgreen&left_text=Downloads
-    :target: https://pepy.tech/project/moldrug
+..  |downloads| image:: https://static.pepy.tech/personalized-badge/small?period=total&units=international_system&left_color=grey&right_color=brightgreen&left_text=Downloads
+    :target: https://pepy.tech/project/small
     :alt: download

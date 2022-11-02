@@ -46,7 +46,11 @@ def test_Parameterize():
     # parameterizer(input_mol=valid_inputs[key], mol_resi_name='HMR', gen_conformer=False)
 
 def test_cmd_Parameterize():
-    process = subprocess.run(f'parameterize {config_yml}', shell=True, executable='/bin/bash', stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) # nosec
+    process = subprocess.run(
+        f'parameterize {config_yml}',
+        shell=True, executable='/bin/bash', stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE, text=True
+    ) # nosec
     returncode = process.returncode
     if returncode != 0:
         raise RuntimeError(process.stderr)

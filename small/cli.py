@@ -39,5 +39,3 @@ def __parameterize_cmd():
     parameterizer = Parameterize(**UserInitKwargs)
     print(parameterizer)
     parameterizer(**UserCallKwargs)
-
-    
