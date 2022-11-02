@@ -83,7 +83,6 @@ def get_rdkit_mol(input_path_mol:str, gen_conformer:bool = False):
 
     if not mol:
         warnings.warn("Molecule was not converted. Check the input")
-    
     return mol
 
 def topology_writer(ligand_structure:parmed.structure.Structure, ext_types:List[str] = None, overwrite = False, out_dir:str = '.') -> None:
