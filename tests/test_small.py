@@ -4,15 +4,15 @@ from small import Parameterize
 import tempfile, os, yaml, subprocess
 from rdkit import Chem
 
-tmp_dir = tempfile.TemporaryDirectory().name
-tmp_dir = 'topo'
+tmp_dir = tempfile.TemporaryDirectory()
+
 valid_inputs = {
     'rdkit': Chem.MolFromSmiles('CC'),
-    'smi': os.path.join(tmp_dir,'mol.smi'),
-    'inchi': os.path.join(tmp_dir,'mol.inchi'),
-    'mol': os.path.join(tmp_dir,'mol.mol'),
-    # 'mol2': os.path.join(tmp_dir,'mol.mol2'),
-    # 'pdb': os.path.join(tmp_dir,'mol.pdb'),
+    'smi': os.path.join(tmp_dir.name,'mol.smi'),
+    'inchi': os.path.join(tmp_dir.name,'mol.inchi'),
+    'mol': os.path.join(tmp_dir.name,'mol.mol'),
+    # 'mol2': os.path.join(tmp_dir.name,'mol.mol2'),
+    # 'pdb': os.path.join(tmp_dir.name,'mol.pdb'),
 }
 
 # Saving the molecules in different formats
@@ -20,13 +20,13 @@ with open(valid_inputs['smi'], 'w') as f: f.write(Chem.MolToSmiles(valid_inputs[
 with open(valid_inputs['inchi'], 'w') as f: f.write(Chem.MolToInchi(valid_inputs['rdkit']))
 Chem.MolToMolFile(valid_inputs['rdkit'], valid_inputs['mol'])
 # Chem.MolToPDBFile(valid_inputs['rdkit'], valid_inputs['pdb'])
-
+print(os.listdir(tmp_dir.name))
 # Saving minimalist configuration file
-config_yml = os.path.join(tmp_dir,'config.yml')
+config_yml = os.path.join(tmp_dir.name,'config.yml')
 config_dict ={
     'input_mol': valid_inputs['mol'],
     'overwrite': True,
-    'out_dir': tmp_dir,
+    'out_dir': tmp_dir.name,
     'gen_conformer': True,
     'hmr_factor': 3,
     'mol_resi_name': 'CMD'
@@ -35,7 +35,7 @@ with open(config_yml, 'w') as f:
     yaml.dump(config_dict,f)
 
 def test_Parameterize():
-    parameterizer = Parameterize(overwrite=True,out_dir=tmp_dir)
+    parameterizer = Parameterize(overwrite=True,out_dir=tmp_dir.name)
     for key in valid_inputs:
         print(key)
         parameterizer(input_mol=valid_inputs[key], mol_resi_name=key[:3], gen_conformer=True)
