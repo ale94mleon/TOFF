@@ -11,7 +11,7 @@ TOFF
     * - **CI/CD**
       - |tests| |codecov| |codacy| |CodeQL|
     * - **Build**
-      - |pypi-version| |conda|
+      - |pypi-version|
     * - **Source Code**
       - |github|
     * - **Python Versions**
