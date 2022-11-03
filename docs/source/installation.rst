@@ -16,6 +16,10 @@ Requirements:
     But if it is not the case or some version conflicts occurred, think about installed in a isolated environment
     as it will be show in brief.
 
+``Python`` version ``3.8``, ``3.9`` and ``3.10`` works in Ubuntu but version ``3.10`` is not currently working in macOS. For Windows we do not have CIs; but
+if the conda environment could be created, **TOFF** should work. All `CIs fails <https://github.com/ale94mleon/TOFF/actions/runs/3378137419>`_ for the new ``Python3.11``.
+The bugs are not because **TOFF** but incompatibility problems between dependencies during the creation of the conda environment.
+
 Via pip (standard)
 ------------------
 

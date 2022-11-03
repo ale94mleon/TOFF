@@ -38,10 +38,11 @@ def get_rdkit_mol(input_path_mol:str, gen_conformer:bool = False):
     ----------
     input_path_mol : str
         The path were the file molecule is. Only the foll, following extensions are valid:
-        #. inchi (only the first line of the file will be considered and should be a valid InChi string)
-        #. smi (only the first line of the file will be considered and should be a valid SMILES string)
-        #. mol
-        #. mol2
+
+        * ``inchi`` (only the first line of the file will be considered and should be a valid InChi string)
+        * ``smi`` (only the first line of the file will be considered and should be a valid SMILES string)
+        * ``mol``
+        * ``mol2``
     gen_conformer : bool, by default False
         If True the :meth:`toff.utils.confgen` will be applied on the molecule in order to generate a conformation.
         For .smi and .inchi entrance :meth:`toff.utils.confgen` is always called.
@@ -96,7 +97,7 @@ def topology_writer(ligand_structure:parmed.structure.Structure, ext_types:List[
         Any extension from:
         'pdb', 'pqr', 'cif','pdbx',
         'parm7', 'prmtop', 'psf', 'top',
-        'gro', 'mol2', '.mol3', 'crd',
+        'gro', 'mol2', 'mol3', 'crd',
         'rst7', 'inpcrd', 'restrt', 'ncrst'
         by default None which means that it will output: 'top', 'pdb', 'gro' files
     overwrite : bool, optional
@@ -174,11 +175,11 @@ def charge_sanitizer(rdkit_mol:Chem.rdchem.Mol, ligand_structure:parmed.structur
     """
     # Get formal charge
     formal_charge = Chem.GetFormalCharge(rdkit_mol)
-    
+
     # Round up the formal charge
     for atom in ligand_structure:
         atom.charge = round(atom.charge,3)
-    
+
     partial_charges = get_partial_charges(ligand_structure)
     diff = round(partial_charges.sum() - formal_charge, 3)
     if diff:
@@ -191,14 +192,14 @@ def charge_sanitizer(rdkit_mol:Chem.rdchem.Mol, ligand_structure:parmed.structur
         if new_diff:
             random_idx = np.random.choice(range(len(new_partial_charges)),1)[0]
             new_partial_charges[random_idx] -= new_diff
-        
+
         # Set corrected charges on the ligand_structure
         ligand_structure = set_partial_charges(ligand_structure, new_partial_charges)
         print(f"After correction: partial_charge - formal_charge = {round(get_partial_charges(ligand_structure).sum() - formal_charge, 3)}.")
     # else:
     #     print("No charge correction needed.")
     return ligand_structure
-           
+
 
 class Parameterize:
     """This is the main class for the parameterization
@@ -242,7 +243,7 @@ class Parameterize:
         self.hmr_factor = hmr_factor
         self.out_dir = os.path.abspath(out_dir)
         self.overwrite = overwrite
-    
+
     def __repr__(self) -> str:
         ext_types_to_print = self.ext_types
         if not ext_types_to_print:
@@ -251,7 +252,7 @@ class Parameterize:
         return f"{self.__class__.__name__}(force_field_code = {self.force_field_code}, "\
             f"ext_types = [{ext_types_to_print}], hmr_factor = {self.hmr_factor}, "\
             f"overwrite = {self.overwrite}, out_dir = {self.out_dir})"
-    
+
     def __call__(self,  input_mol, mol_resi_name:str = "MOL", gen_conformer:bool = False):
         """This class is callable. And this is its implementation.
         it will return the specified files (ext_types in __init__) in the directory out_dir.
@@ -275,7 +276,7 @@ class Parameterize:
         Exception
             Some exceptions occurred getting the topologies.
         """
-        
+
         if isinstance(input_mol, Chem.rdchem.Mol):
             rdkit_mol = Chem.AddHs(input_mol)
             if gen_conformer: rdkit_mol = confgen(rdkit_mol)
@@ -283,17 +284,17 @@ class Parameterize:
             rdkit_mol = get_rdkit_mol(input_path_mol = input_mol, gen_conformer = gen_conformer)
         else:
             raise Exception(f'input_mol must be an instance of Chem.rdchem.Mol or str. But it is {type(input_mol)}')
-        
+
         if len(mol_resi_name) > 4:
             warnings.warn(f"mol_resi_name = {mol_resi_name} is to large. consider to use a code with no more than 4 characters.")
 
         # Create if needed the output directory
         if not os.path.isdir(self.out_dir): os.makedirs(self.out_dir)
-        
+
         # Create temporal pdb file
         tmp_pdb = tempfile.NamedTemporaryFile(suffix='.pdb')
         Chem.MolToPDBFile(rdkit_mol, tmp_pdb.name)
-        
+
         # Generate the topology
         try:
             openff_mol = Molecule(rdkit_mol)
@@ -313,7 +314,7 @@ class Parameterize:
 
         # Correct charges if needed
         ligand_structure = charge_sanitizer(rdkit_mol = rdkit_mol, ligand_structure = ligand_structure)
-        
+
         # Write the output topologies
         topology_writer(
             ligand_structure = ligand_structure,
