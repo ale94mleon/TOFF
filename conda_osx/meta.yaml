@@ -1,0 +1,33 @@
+{% set data = load_setup_py_data() %}
+
+# Building: conda build -c conda-forge  conda/
+package:
+  name: toff
+  version: {{ data['version'] }}
+
+source:
+  path: ..
+
+build:
+  number: 0
+  script: python -m pip install .
+requirements:
+  host:
+    - python>=3.8,<3.10
+    - pip
+  run:
+    - openff-toolkit
+    - openmm
+
+test:
+  imports:
+    - toff
+
+about:
+  home: {{ data['url'] }}
+  license:  {{ data['license'] }}
+  dev_url: {{ data['url'] }}
+  doc_url: {{ data['project_urls']['Documentation'] }}
+  doc_source_url: https://github.com/ale94mleon/MolDrug/tree/main/docs/source
+  summary: {{ data['description'] }}
+

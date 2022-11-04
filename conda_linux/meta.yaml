@@ -13,7 +13,7 @@ build:
   script: python -m pip install .
 requirements:
   host:
-    - python>=3.8,<3.10 
+    - python>=3.8,<=3.10
     - pip
   run:
     - openff-toolkit
