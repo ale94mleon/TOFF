@@ -12,8 +12,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: publish-to-conda
-      uses: ale94mleon/conda-publish-action@v1.3
+      uses: ale94mleon/conda-publish-action@v1.4
       with:
         subdir: 'conda_linux'
         anacondatoken: ${{ secrets.ANACONDA_TOKEN }}
+        channels: 'conda-forge'
         platforms: 'linux'
