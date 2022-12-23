@@ -57,4 +57,4 @@ def test_cmd_Parameterize():
 
 
 if __name__ == '__main__':
-    test_cmd_Parameterize()
+    pass
