@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import os, warnings, tempfile
+from copy import deepcopy
 from rdkit import Chem
 from rdkit.Chem import AllChem
 from openff.toolkit.typing.engines.smirnoff import ForceField
@@ -200,6 +201,34 @@ def charge_sanitizer(rdkit_mol:Chem.rdchem.Mol, ligand_structure:parmed.structur
     #     print("No charge correction needed.")
     return ligand_structure
 
+def safe_naming(ligand_structure:parmed.structure.Structure, prefix:str = 'z', inplace:bool = True):
+    """Add a prefix to the atom types in order to avoid
+    incompatibilities with other force fields
+
+    Parameters
+    ----------
+    ligand_structure : parmed.structure.Structure
+        The Structure with the topologies
+    prefix : str, optional
+        The string to add at the begging of the atom types, by default 'z'
+    inplace : bool, optional
+        TO modify inplace the structure, by default True
+
+    Returns
+    -------
+    parmed.structure.Structure
+        Return a copy of the Structure or if inplace False or None otherwise.
+    """
+    if not inplace:
+        ligand_structure = deepcopy(ligand_structure)
+    for atom in ligand_structure.atoms:
+        if not atom.atom_type.name.startswith(prefix):
+            atom.atom_type.name = f"{prefix}{atom.atom_type.name}"
+        atom.type = atom.atom_type.name
+    if inplace:
+        return None
+    else:
+        return ligand_structure
 
 class Parameterize:
     """This is the main class for the parameterization
@@ -211,6 +240,7 @@ class Parameterize:
             ext_types:List[str] = None,
             hmr_factor:float = None,
             overwrite:bool = False,
+            safe_naming_prefix:str = None,
             out_dir:str = '.',
             ) -> None:
         """This is the constructor of the class.
@@ -234,6 +264,10 @@ class Parameterize:
             Useful to increases the integrating time step to 4 fs, by default None
         overwrite : bool, optional
             If True it will overwrite existing output files, by default False
+        safe_naming_prefix : str, optional
+            If some string is provided, this will added at the beginning
+            of the atom types. This is sometime needed to avoid incompatibilities
+            with other force fields, by default None
         out_dir : str, optional
             Where the files will be written, by default '.'
         """
@@ -241,8 +275,9 @@ class Parameterize:
         self.force_field_code = force_field_code
         self.ext_types = ext_types
         self.hmr_factor = hmr_factor
-        self.out_dir = os.path.abspath(out_dir)
         self.overwrite = overwrite
+        self.safe_naming_prefix = safe_naming_prefix
+        self.out_dir = os.path.abspath(out_dir)
 
     def __repr__(self) -> str:
         ext_types_to_print = self.ext_types
@@ -251,7 +286,8 @@ class Parameterize:
         ext_types_to_print = ' '.join(ext_types_to_print)
         return f"{self.__class__.__name__}(force_field_code = {self.force_field_code}, "\
             f"ext_types = [{ext_types_to_print}], hmr_factor = {self.hmr_factor}, "\
-            f"overwrite = {self.overwrite}, out_dir = {self.out_dir})"
+            f"overwrite = {self.overwrite}, safe_naming_prefix = {self.safe_naming_prefix}, "\
+            f"out_dir = {self.out_dir})"
 
     def __call__(self,  input_mol, mol_resi_name:str = "MOL", gen_conformer:bool = False):
         """This class is callable. And this is its implementation.
@@ -315,7 +351,11 @@ class Parameterize:
         # Correct charges if needed
         ligand_structure = charge_sanitizer(rdkit_mol = rdkit_mol, ligand_structure = ligand_structure)
 
+
+
         # Write the output topologies
+        if self.safe_naming_prefix:
+            safe_naming(ligand_structure, prefix=self.safe_naming_prefix, inplace=True)
         topology_writer(
             ligand_structure = ligand_structure,
             ext_types = self.ext_types,
