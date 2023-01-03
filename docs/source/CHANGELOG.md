@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### Changed
+
+- `toff.utils.confgen` now check if it is needed to generate a conformation and add hydrogens.
+
+### Removed
+
+- Parameter `gen_conformer` from `toff.utils.get_rdkit_mol` and `toff.utils.parameterize.__call__`.
+
 ### Added
 
 - `toff.utils.safe_naming`. Add a prefix to the atom types.

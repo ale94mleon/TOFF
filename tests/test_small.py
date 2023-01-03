@@ -28,7 +28,6 @@ config_dict ={
     'input_mol': valid_inputs['mol'],
     'overwrite': True,
     'out_dir': tmp_dir.name,
-    'gen_conformer': True,
     'hmr_factor': 3,
     'mol_resi_name': 'CMD'
 }
@@ -39,11 +38,11 @@ def test_Parameterize():
     parameterizer = Parameterize(overwrite=True,out_dir=tmp_dir.name)
     for key in valid_inputs:
         print(key)
-        parameterizer(input_mol=valid_inputs[key], mol_resi_name=key[:3], gen_conformer=True)
+        parameterizer(input_mol=valid_inputs[key], mol_resi_name=key[:3])
 
     # # test HMR
     # parameterizer = Parameterize(overwrite=True,out_dir=tmp_dir, hmr_factor=2.5)
-    # parameterizer(input_mol=valid_inputs[key], mol_resi_name='HMR', gen_conformer=False)
+    # parameterizer(input_mol=valid_inputs[key], mol_resi_name='HMR')
 
 def test_cmd_Parameterize():
     process = subprocess.run(

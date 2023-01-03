@@ -15,7 +15,9 @@ from typing import List, Iterable
 #This module was strongly inspired in https://github.com/aniketsh/OpenFF/blob/82a2b5803e36b72f3525e3b8631cf256fbd8e35a/openff_topology.py
 
 def confgen(mol: Chem.rdchem.Mol):
-    """Create a 3D model from a smiles and return a pdbqt string and, a mol if ``return_mol = True``.
+    """Create a 3D model for the molecule only
+    if there are not any available. If there some available but
+    it does not have Hs, they will be added.
 
     Parameters
     ----------
@@ -25,15 +27,23 @@ def confgen(mol: Chem.rdchem.Mol):
     Returns
     -------
     Chem.rdchem.Mol
-        A new instance of the input molecule with a conformation.
+        A new instance of the input molecule with a conformation if inplace = False, if not None
     """
-    mol = Chem.AddHs(mol)
-    AllChem.EmbedMolecule(mol)
-    AllChem.MMFFOptimizeMolecule(mol)
+
+    if mol.GetConformers():
+        if mol.GetNumAtoms() == Chem.RemoveHs(mol).GetNumAtoms():
+            mol = Chem.AddHs(mol, addCoords=True)
+    else:
+        if mol.GetNumAtoms() == Chem.RemoveHs(mol).GetNumAtoms():
+            mol = Chem.AddHs(mol)
+        AllChem.EmbedMolecule(mol)
+        AllChem.MMFFOptimizeMolecule(mol)
+
     return mol
 
-def get_rdkit_mol(input_path_mol:str, gen_conformer:bool = False):
+def get_rdkit_mol(input_path_mol:str):
     """Get a file with a definition of a molecule and return the corresponded RDKit molecule object
+    with a conformation if there not present.
 
     Parameters
     ----------
@@ -44,9 +54,6 @@ def get_rdkit_mol(input_path_mol:str, gen_conformer:bool = False):
         * ``smi`` (only the first line of the file will be considered and should be a valid SMILES string)
         * ``mol``
         * ``mol2``
-    gen_conformer : bool, by default False
-        If True the :meth:`toff.utils.confgen` will be applied on the molecule in order to generate a conformation.
-        For .smi and .inchi entrance :meth:`toff.utils.confgen` is always called.
 
     Returns
     -------
@@ -76,12 +83,7 @@ def get_rdkit_mol(input_path_mol:str, gen_conformer:bool = False):
     else:
         raise NotImplementedError(f"Only: *.inchi, *.smi, *.mol, *.mol2 are valid extensions. But *.{extension} was provided")
         # raise NotImplementedError(f"Only: *.inchi, *.smi, *.pdb, *.mol, *.mol2 are valid extensions. But *.{extension} was provided")
-
-    mol = Chem.AddHs(mol)
-    if extension in ['inchi', 'smi']:
-        mol = confgen(mol)
-    else:
-        if gen_conformer: mol = confgen(mol)
+    mol = confgen(mol)
 
     if not mol:
         warnings.warn("Molecule was not converted. Check the input")
@@ -289,7 +291,7 @@ class Parameterize:
             f"overwrite = {self.overwrite}, safe_naming_prefix = {self.safe_naming_prefix}, "\
             f"out_dir = {self.out_dir})"
 
-    def __call__(self,  input_mol, mol_resi_name:str = "MOL", gen_conformer:bool = False):
+    def __call__(self,  input_mol, mol_resi_name:str = "MOL"):
         """This class is callable. And this is its implementation.
         it will return the specified files (ext_types in __init__) in the directory out_dir.
 
@@ -302,8 +304,6 @@ class Parameterize:
         mol_resi_name : str, optional
             The residue name that will have the ligand. It is recommended to use
             name no longer than 4 characters, by default "MOL"
-        gen_conformer : bool, optional
-            If True, a conformer will be generated for input_mol, by default False
 
         Raises
         ------
@@ -314,10 +314,9 @@ class Parameterize:
         """
 
         if isinstance(input_mol, Chem.rdchem.Mol):
-            rdkit_mol = Chem.AddHs(input_mol)
-            if gen_conformer: rdkit_mol = confgen(rdkit_mol)
+            rdkit_mol = confgen(input_mol)
         elif isinstance(input_mol, str):
-            rdkit_mol = get_rdkit_mol(input_path_mol = input_mol, gen_conformer = gen_conformer)
+            rdkit_mol = get_rdkit_mol(input_path_mol = input_mol)
         else:
             raise Exception(f'input_mol must be an instance of Chem.rdchem.Mol or str. But it is {type(input_mol)}')
 
