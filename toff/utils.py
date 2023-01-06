@@ -29,8 +29,6 @@ def confgen(mol: Chem.rdchem.Mol):
     Chem.rdchem.Mol
         A new instance of the input molecule with a conformation if inplace = False, if not None
     """
-    # TODO Clean all the properties of the molecule
-    # Incompatible with Parameterize, no idea why
     if mol.GetConformers():
         if mol.GetNumAtoms() == Chem.RemoveHs(mol).GetNumAtoms():
             mol = Chem.AddHs(mol, addCoords=True)
