@@ -29,7 +29,8 @@ def confgen(mol: Chem.rdchem.Mol):
     Chem.rdchem.Mol
         A new instance of the input molecule with a conformation if inplace = False, if not None
     """
-
+    # TODO Clean all the properties of the molecule
+    # Incompatible with Parameterize, no idea why
     if mol.GetConformers():
         if mol.GetNumAtoms() == Chem.RemoveHs(mol).GetNumAtoms():
             mol = Chem.AddHs(mol, addCoords=True)
@@ -160,7 +161,7 @@ def set_partial_charges(ligand_structure:Chem.rdchem.Mol, partial_charges:Iterab
         atom.charge = charge
     return ligand_structure
 
-def charge_sanitizer(rdkit_mol:Chem.rdchem.Mol, ligand_structure:parmed.structure.Structure):
+def charge_sanitizer(rdkit_mol:Chem.rdchem.Mol, ligand_structure:parmed.structure.Structure, random_state:int = 1234):
     """Check and correct (if needed) if the formal charge from the rdkit_mol is not the same as the sum of
     of the partial charges of the ligand_structure.
 
@@ -170,12 +171,18 @@ def charge_sanitizer(rdkit_mol:Chem.rdchem.Mol, ligand_structure:parmed.structur
         A rdkit mol representation of ligand_structure.
     ligand_structure : parmed.structure.Structure
         The Structure where the charges must be check.
-
+    random_state : int
+        To choice what atoms for the distribution of the charge if needed.
     Returns
     -------
     parmed.structure.Structure
         ligand_structure with the corrected partial charges
     """
+    if random_state:
+        prng = np.random.RandomState(random_state)
+    else:
+        prng = np.random
+
     # Get formal charge
     formal_charge = Chem.GetFormalCharge(rdkit_mol)
 
@@ -193,7 +200,7 @@ def charge_sanitizer(rdkit_mol:Chem.rdchem.Mol, ligand_structure:parmed.structur
         # Handling possible problems on float operations
         new_diff = round(new_partial_charges.sum() - formal_charge, 3)
         if new_diff:
-            random_idx = np.random.choice(range(len(new_partial_charges)),1)[0]
+            random_idx = prng.choice(range(len(new_partial_charges)),1)[0]
             new_partial_charges[random_idx] -= new_diff
 
         # Set corrected charges on the ligand_structure
@@ -312,7 +319,6 @@ class Parameterize:
         Exception
             Some exceptions occurred getting the topologies.
         """
-
         if isinstance(input_mol, Chem.rdchem.Mol):
             rdkit_mol = confgen(input_mol)
         elif isinstance(input_mol, str):

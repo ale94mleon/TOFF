@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `toff.utils.safe_naming`. Add a prefix to the atom types.
 - `safe_naming_prefix` keyword on `toff.utils.Parameterize`. It uses the previous function if some string is provided.
+- `random_state` to `toff.utils.charge_sanitizer`. Needed for reproducibility.
 
 ### Fixed
 
