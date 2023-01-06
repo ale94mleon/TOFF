@@ -342,7 +342,8 @@ class Parameterize:
             ligand_structure = parmed.openmm.load_topology(ligand_pdbfile.topology, ligand_system, xyz = ligand_pdbfile.positions)
         except Exception as e:
             raise Exception(e)
-
+        tmp_pdb.close()
+        
         # Make Hydrogens Heavy for 4fs timestep
         if self.hmr_factor:
             parmed.tools.HMassRepartition(ligand_structure, self.hmr_factor).execute()
@@ -353,8 +354,6 @@ class Parameterize:
 
         # Correct charges if needed
         ligand_structure = charge_sanitizer(rdkit_mol = rdkit_mol, ligand_structure = ligand_structure)
-
-
 
         # Write the output topologies
         if self.safe_naming_prefix:
