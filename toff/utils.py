@@ -159,7 +159,7 @@ def set_partial_charges(ligand_structure:Chem.rdchem.Mol, partial_charges:Iterab
         atom.charge = charge
     return ligand_structure
 
-def charge_sanitizer(rdkit_mol:Chem.rdchem.Mol, ligand_structure:parmed.structure.Structure, random_state:int = 1234):
+def charge_sanitizer(rdkit_mol:Chem.rdchem.Mol, ligand_structure:parmed.structure.Structure, max_iter:int = 100):
     """Check and correct (if needed) if the formal charge from the rdkit_mol is not the same as the sum of
     of the partial charges of the ligand_structure.
 
@@ -169,41 +169,44 @@ def charge_sanitizer(rdkit_mol:Chem.rdchem.Mol, ligand_structure:parmed.structur
         A rdkit mol representation of ligand_structure.
     ligand_structure : parmed.structure.Structure
         The Structure where the charges must be check.
-    random_state : int
-        To choice what atoms for the distribution of the charge if needed.
+    max_iter : int
+        The total amount of iterations in case that the charges need to be fixed.
     Returns
     -------
     parmed.structure.Structure
         ligand_structure with the corrected partial charges
     """
-    if random_state:
-        prng = np.random.RandomState(random_state)
-    else:
-        prng = np.random
+    # if random_state:
+    #     prng = np.random.RandomState(random_state)
+    # else:
+    #     prng = np.random
 
     # Get formal charge
     formal_charge = Chem.GetFormalCharge(rdkit_mol)
 
     # Round up the formal charge
     for atom in ligand_structure:
-        atom.charge = round(atom.charge,3)
+        atom.charge = round(atom.charge,7)
 
     partial_charges = get_partial_charges(ligand_structure)
-    diff = round(partial_charges.sum() - formal_charge, 3)
+    diff = round(partial_charges.sum() - formal_charge, 6)
     if diff:
         # distribute the remaining charge among all atoms
-        print(f"Charges will be corrected: partial_charge - formal_charge = {diff}")
-        quotient = diff / rdkit_mol.GetNumAtoms()
-        new_partial_charges = (partial_charges - quotient).round(3)
-        # Handling possible problems on float operations
-        new_diff = round(new_partial_charges.sum() - formal_charge, 3)
-        if new_diff:
-            random_idx = prng.choice(range(len(new_partial_charges)),1)[0]
-            new_partial_charges[random_idx] -= new_diff
+        print(f"Charges will be corrected: partial_charge - formal_charge = {round(diff, 6)}")
+        max_iter = 100
+        cont = 0
+        while diff:
+            quotient = diff / len(partial_charges)
+            partial_charges = (partial_charges - quotient).round(7)
+            # Handling possible problems on float operations
+            diff = round(partial_charges.sum() - formal_charge, 6)
+            cont += 1
+            if cont > max_iter:
+                break
 
         # Set corrected charges on the ligand_structure
-        ligand_structure = set_partial_charges(ligand_structure, new_partial_charges)
-        print(f"After correction: partial_charge - formal_charge = {round(get_partial_charges(ligand_structure).sum() - formal_charge, 3)}.")
+        ligand_structure = set_partial_charges(ligand_structure, partial_charges)
+        print(f"After correction: partial_charge - formal_charge = {round(get_partial_charges(ligand_structure).sum() - formal_charge, 5)}.")
     # else:
     #     print("No charge correction needed.")
     return ligand_structure

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+## [0.0.1] - 2023.01.08
+
 ### Changed
 
 - `toff.utils.confgen` now check if it is needed to generate a conformation and add hydrogens.
@@ -19,10 +21,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `toff.utils.safe_naming`. Add a prefix to the atom types.
 - `safe_naming_prefix` keyword on `toff.utils.Parameterize`. It uses the previous function if some string is provided.
-- `random_state` to `toff.utils.charge_sanitizer`. Needed for reproducibility.
+- `max_iter` to `toff.utils.charge_sanitizer`. Maximum number of iteration in case of charge correction.
 
 ### Fixed
 
 - Improve documentation
 
-[unreleased]: https://github.com/ale94mleon/TOFF/compare/0.0.0-alpha2...HEAD
+[unreleased]: https://github.com/ale94mleon/TOFF/compare/0.0.1...HEAD
+[0.0.1]: https://github.com/ale94mleon/TOFF/compare/0.0.0-alpha2...0.0.1
