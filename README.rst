@@ -51,6 +51,12 @@ Citing **TOFF**
 
 Please refer to the `citation page <https://TOFF.readthedocs.io/en/latest/source/citations.html>`__ on the documentation.
 
+Foundings
+---------
+
+This project received foundings from `Marie Skłodowska-Curie Actions <https://cordis.europa.eu/project/id/860592>`__. It was developed in the 
+`Computational Biophysics Group <https://biophys.uni-saarland.de/>`__ of `Saarland University <https://www.uni-saarland.de/en/home.html>`__.
+
 
 ..  |docs|  image:: https://readthedocs.org/projects/toff/badge/?version=latest
     :target: https://toff.readthedocs.io/en/latest/?badge=latest
