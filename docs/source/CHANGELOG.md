@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+## [0.0.2]
+
+### Added
+
+- `toff.utils.get_rdkit_mol` accept `sdf` molecules too. Only the first molecule/conformer will be used.
+- Example using the `safe_naming_prefix` on `toff.utils.Parameterize`.
+
 ## [0.0.1] - 2023.01.08
 
 ### Changed
@@ -27,5 +34,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Improve documentation
 
-[unreleased]: https://github.com/ale94mleon/TOFF/compare/0.0.1...HEAD
+[unreleased]: https://github.com/ale94mleon/TOFF/compare/0.0.2...HEAD
+[unreleased]: https://github.com/ale94mleon/TOFF/compare/0.0.1...0.0.2
 [0.0.1]: https://github.com/ale94mleon/TOFF/compare/0.0.0-alpha2...0.0.1
