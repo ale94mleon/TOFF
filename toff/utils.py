@@ -52,6 +52,7 @@ def get_rdkit_mol(input_path_mol:str):
         * ``inchi`` (only the first line of the file will be considered and should be a valid InChi string)
         * ``smi`` (only the first line of the file will be considered and should be a valid SMILES string)
         * ``mol``
+        * ``sdf`` (only the first molecule/conformer will be used)
         * ``mol2``
 
     Returns
@@ -75,12 +76,14 @@ def get_rdkit_mol(input_path_mol:str):
             mol = Chem.MolFromSmiles(f.readline())
     elif extension == 'mol':
         mol = Chem.MolFromMolFile(input_path_mol)
+    elif extension == 'sdf':
+        mol = Chem.SDMolSupplier(input_path_mol)[0]
     elif extension == 'mol2':
         mol = Chem.MolFromMol2File(input_path_mol)
     # elif extension == 'pdb':
     #     mol = Chem.MolFromPDBFile(input_path_mol)
     else:
-        raise NotImplementedError(f"Only: *.inchi, *.smi, *.mol, *.mol2 are valid extensions. But *.{extension} was provided")
+        raise NotImplementedError(f"Only: *.inchi, *.smi, *.mol, *.sdf *.mol2 are valid extensions. But *.{extension} was provided")
         # raise NotImplementedError(f"Only: *.inchi, *.smi, *.pdb, *.mol, *.mol2 are valid extensions. But *.{extension} was provided")
     mol = confgen(mol)
 
