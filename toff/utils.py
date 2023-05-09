@@ -77,6 +77,7 @@ def get_rdkit_mol(input_path_mol:str):
     elif extension == 'mol':
         mol = Chem.MolFromMolFile(input_path_mol)
     elif extension == 'sdf':
+        # TODO, check what happens if more than one conformation is provided. Maybe it is beneficial and this information is used by OpenFF
         mol = Chem.SDMolSupplier(input_path_mol)[0]
     elif extension == 'mol2':
         mol = Chem.MolFromMol2File(input_path_mol)
@@ -310,7 +311,7 @@ class Parameterize:
         ----------
         input_mol : str, Chem.rdchem.Mol molecule
             Could be a path to any file compatible with :meth:`toff.utils.get_rdkit_mol`:
-            (.inchi, .smi, .mol, .mol2)
+            (.inchi, .smi, .mol, .sdf, .mol2)
             or any valid RDKit molecule
         mol_resi_name : str, optional
             The residue name that will have the ligand. It is recommended to use
