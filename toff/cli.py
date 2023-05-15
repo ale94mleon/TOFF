@@ -25,8 +25,8 @@ def __parameterize_cmd():
     print(f"You are using toff:{__version__}")
     with open(args.yaml_file, 'r') as c:
         Config = yaml.safe_load(c)
-    InitKwargs = ['force_field_code','ext_types','hmr_factor','overwrite','out_dir']
-    CallKwargs = ['input_mol','mol_resi_name','gen_conformer']
+    InitKwargs = ['force_field_code','ext_types','hmr_factor','overwrite', 'safe_naming_prefix', 'out_dir']
+    CallKwargs = ['input_mol','mol_resi_name']
 
     UserExtraNonValidKwargs = set(Config.keys()) - set(InitKwargs + CallKwargs)
     if 'input_mol' not in Config:
