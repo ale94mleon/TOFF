@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # We will use semantic version (major, minor, patch)
-__main_version_tuple__ = (1, 0, 0)
+__main_version_tuple__ = (0, 1, 0)
 __pre_version_tuple__ = None # or None or an empty tuple, the first char is alpha, beta, rc, etc...
 
 if __pre_version_tuple__:
