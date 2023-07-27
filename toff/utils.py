@@ -5,9 +5,9 @@ import os, warnings, tempfile
 from copy import deepcopy
 from rdkit import Chem
 from rdkit.Chem import AllChem
-from openff.toolkit.typing.engines.smirnoff import ForceField
+from openff.toolkit.typing.engines import smirnoff
 from openff.toolkit.topology import Molecule
-from openmm.app import PDBFile
+from openmm import app
 import parmed
 from typing import List, Iterable
 
@@ -244,13 +244,83 @@ def safe_naming(ligand_structure:parmed.structure.Structure, prefix:str = 'z', i
     else:
         return ligand_structure
 
+def generate_structure(rdkit_mol:Chem.rdchem.Mol, force_field_type:str = 'openff', force_field_code:str = None) -> parmed.structure.Structure:
+    """Generate a Structure object with the topology information from the specified force field.
+    OpenFF, GAFF and Espaloma flawors are supported
+
+    Parameters
+    ----------
+    rdkit_mol : Chem.rdchem.Mol
+        An RDKit molecule
+    force_field_type : str, optional
+        This is used to identify the force field. Valid options are openff, gaff, espaloma (case insensitive), by default 'openff'
+    force_field_code : str, optional
+        This is the code that represent the force field.  Any valid OpenFF, GAFF or Espaloma string representation.
+        Visit the `openff-forcefields <https://github.com/openforcefield/openff-forcefields>`__
+        and `openmmforcefields <https://github.com/openmm/openmmforcefields>` for
+        more information. Its default value will dynamically change depending on force_field_type as:
+        * openff -> openff_unconstrained-2.0.0.offxml
+        * gaff -> gaff-2.11
+        * espaloma -> espaloma-0.2.2
+
+    Returns
+    -------
+    parmed.structure.Structure
+        The Structure object with its corresponding force field parameters
+
+    Raises
+    ------
+    Exception
+        Invalid force_field_type.
+    """
+    force_field_code_default = {
+        'openff': 'openff_unconstrained-2.0.0.offxml',
+        'gaff': 'gaff-2.11',
+        'espaloma': 'espaloma-0.2.2'
+    }
+    # Check validity of force_field_type
+    force_field_type = force_field_type.lower()
+    if force_field_type in force_field_code_default:
+        # Update the internal default options if the user provided a force_field_code
+        if force_field_code:
+            force_field_code_default[force_field_type] = force_field_code
+    else:
+        raise Exception(f"{force_field_type = } is not valid. Choose from: {force_field_code_default.keys()}.")
+    # Create temporal pdb file
+    tmp_pdb = tempfile.NamedTemporaryFile(suffix='.pdb')
+    Chem.MolToPDBFile(rdkit_mol, tmp_pdb.name)
+
+    # Generate the topology
+    molecule = Molecule(rdkit_mol)
+    pdb_obj = app.PDBFile(tmp_pdb.name)
+    if force_field_type == 'openff':
+        system = smirnoff.ForceField(force_field_code_default[force_field_type]).create_openmm_system(molecule.to_topology())
+    else:
+        forcefield_obj = app.ForceField()
+        if force_field_type == 'gaff':
+            # Create the GAFF template generator
+            from openmmforcefields.generators import GAFFTemplateGenerator
+            template_generator = GAFFTemplateGenerator(molecules=molecule, forcefield = force_field_code_default[force_field_type])
+        elif force_field_type == 'espaloma':
+            # Create the Espaloma template generator
+            from openmmforcefields.generators import EspalomaTemplateGenerator
+            template_generator = EspalomaTemplateGenerator(molecules=molecule, forcefield = force_field_code_default[force_field_type])
+            
+        forcefield_obj.registerTemplateGenerator(template_generator.generator)
+        system = forcefield_obj.createSystem(pdb_obj.topology)
+    
+    structure = parmed.openmm.load_topology(pdb_obj.topology, system = system, xyz = pdb_obj.positions)
+    tmp_pdb.close()
+    return structure
+
 class Parameterize:
     """This is the main class for the parameterization
     """
 
     def __init__(
             self,
-            force_field_code:str = 'openff_unconstrained-2.0.0.offxml',
+            force_field_type:str = 'openff',
+            force_field_code:str = None,
             ext_types:List[str] = None,
             hmr_factor:float = None,
             overwrite:bool = False,
@@ -258,13 +328,20 @@ class Parameterize:
             out_dir:str = '.',
             ) -> None:
         """This is the constructor of the class.
+        GAFF and Espaloma capabilities came on version toff:0.1.0
 
         Parameters
         ----------
+        force_field_type : str, optional
+            This is used to identify the force field. Valid options are openff, gaff, espaloma (case insensitive), by default 'openff'
         force_field_code : str, optional
-            Any valid Open Force Field string representation.
-            Visit the `GitHub repo <https://github.com/openforcefield/openff-forcefields>`__ for
-            more information, by default 'openff_unconstrained-2.0.0.offxml'
+            This is the code that represent the force field.  Any valid OpenFF, GAFF or Espaloma string representation.
+            Visit the `openff-forcefields <https://github.com/openforcefield/openff-forcefields>`__
+            and `openmmforcefields <https://github.com/openmm/openmmforcefields>` for
+            more information. Its default value will dynamically change depending on force_field_type as:
+            * openff -> openff_unconstrained-2.0.0.offxml
+            * gaff -> gaff-2.11
+            * espaloma -> espaloma-0.2.2
         ext_types : List[str], optional
             Any extension from:
             'pdb', 'pqr', 'cif','pdbx',
@@ -287,6 +364,7 @@ class Parameterize:
         """
 
         self.force_field_code = force_field_code
+        self.force_field_type = force_field_type.lower()
         self.ext_types = ext_types
         self.hmr_factor = hmr_factor
         self.overwrite = overwrite
@@ -337,19 +415,11 @@ class Parameterize:
         # Create if needed the output directory
         if not os.path.isdir(self.out_dir): os.makedirs(self.out_dir)
 
-        # Create temporal pdb file
-        tmp_pdb = tempfile.NamedTemporaryFile(suffix='.pdb')
-        Chem.MolToPDBFile(rdkit_mol, tmp_pdb.name)
-
-        # Generate the topology
-        try:
-            openff_mol = Molecule(rdkit_mol)
-            ligand_pdbfile = PDBFile(tmp_pdb.name)
-            ligand_system = ForceField(self.force_field_code).create_openmm_system(openff_mol.to_topology())
-            ligand_structure = parmed.openmm.load_topology(ligand_pdbfile.topology, ligand_system, xyz = ligand_pdbfile.positions)
-        except Exception as e:
-            raise Exception(e)
-        tmp_pdb.close()
+        ligand_structure = generate_structure(
+            rdkit_mol = rdkit_mol,
+            force_field_type = self.force_field_type,
+            force_field_code = self.force_field_code
+        )
         
         # Make Hydrogens Heavy for 4fs timestep
         if self.hmr_factor:

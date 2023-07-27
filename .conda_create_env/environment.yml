@@ -6,6 +6,7 @@ dependencies:
   - python==3.*
   - openmm
   - openff-toolkit
+  - openmmforcefields
   - nbsphinx
   - sphinx 
   - pip:

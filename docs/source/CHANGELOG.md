@@ -5,7 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+## [0.1.0]  - 2023.07.27
+
+### Added
+
+- `toff.utils.generate_structure`. this function can now be used to also take parameters from GAFF and/or Espaloma. For that openmmforcefields must be installed.
+In the case of Espaloma, this module has to be installed as well.
+
+### Changed
+
+- Now the default force field in the class `toff.utils.Parameterize` is selected base on the keyword `force_field_type`. They are:
+  - openff -> openff_unconstrained-2.0.0.offxml
+  - gaff -> gaff-2.11
+  - espaloma -> espaloma-0.2.2
 
 ## [0.0.2]  - 2023.03.27
 

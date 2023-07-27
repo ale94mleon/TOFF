@@ -40,7 +40,7 @@ Then install the dependencies libraries:
 
 .. code-block:: bash
 
-    conda install -y -c conda-forge openff-toolkit openmm
+    conda install -y -c conda-forge openff-toolkit openmm openmmforcefields
 
 ..  In the future we will consider to use the python modules `vina on pypi <https://pypi.org/project/vina/>`_. Finally:
 

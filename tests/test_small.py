@@ -4,6 +4,7 @@ from toff import Parameterize
 import tempfile, os, yaml
 import subprocess # nosec
 from rdkit import Chem
+import pytest
 
 tmp_dir = tempfile.TemporaryDirectory()
 
@@ -34,12 +35,29 @@ config_dict ={
 with open(config_yml, 'w') as f:
     yaml.dump(config_dict,f)
 
-def test_Parameterize():
-    parameterizer = Parameterize(overwrite=True,out_dir=tmp_dir.name)
+
+@pytest.mark.filterwarnings("ignore:pkg_resources is deprecated")
+def test_Parameterize_openff():
+    parameterizer = Parameterize(overwrite=True,out_dir=tmp_dir.name, force_field_type='openff')
     for key in valid_inputs:
         print(key)
         parameterizer(input_mol=valid_inputs[key], mol_resi_name=key[:3])
 
+def test_Parameterize_gaff():
+    parameterizer = Parameterize(overwrite=True,out_dir=tmp_dir.name, force_field_type = 'gaff')
+    for key in valid_inputs:
+        print(key)
+        parameterizer(input_mol=valid_inputs[key], mol_resi_name=key[:3])
+
+def test_Parameterize_espaloma():
+    try:
+        import espaloma
+    except Exception:
+        pytest.xfail("espaloma is not installed")
+    parameterizer = Parameterize(overwrite=True,out_dir=tmp_dir.name, force_field_type = 'espaloma')
+    for key in valid_inputs:
+        print(key)
+        parameterizer(input_mol=valid_inputs[key], mol_resi_name=key[:3])
     # # test HMR
     # parameterizer = Parameterize(overwrite=True,out_dir=tmp_dir, hmr_factor=2.5)
     # parameterizer(input_mol=valid_inputs[key], mol_resi_name='HMR')
