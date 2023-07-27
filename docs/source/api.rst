@@ -10,6 +10,8 @@ a very active initiative and a perfect tool to get rid of these problems. Their 
 are constantly under update. These force fields use the SMIRKS Native Open Force Field (SMIRNOFF) format, which helps to reach a wide number of chemical
 structures.
 
+Since version `0.1.0`_ it is also possible to get GAFF and Espaloma force field parameters
+
 **TOFF** is python module but also have a friendly command line interface.
 The main class to work with is :meth:`toff.utils.Parameterize`. Examples on how to use both interface: as a module and as a command line are found in the ``Tutorials`` section
 
