@@ -261,7 +261,7 @@ def generate_structure(rdkit_mol:Chem.rdchem.Mol, force_field_type:str = 'openff
         more information. Its default value will dynamically change depending on force_field_type as:
         * openff -> openff_unconstrained-2.0.0.offxml
         * gaff -> gaff-2.11
-        * espaloma -> espaloma-0.2.2
+        * espaloma -> espaloma-0.3.1
 
     Returns
     -------
@@ -276,7 +276,7 @@ def generate_structure(rdkit_mol:Chem.rdchem.Mol, force_field_type:str = 'openff
     force_field_code_default = {
         'openff': 'openff_unconstrained-2.0.0.offxml',
         'gaff': 'gaff-2.11',
-        'espaloma': 'espaloma-0.2.2'
+        'espaloma': 'espaloma-0.3.1'
     }
     # Check validity of force_field_type
     force_field_type = force_field_type.lower()
@@ -293,6 +293,7 @@ def generate_structure(rdkit_mol:Chem.rdchem.Mol, force_field_type:str = 'openff
     # Generate the topology
     molecule = Molecule(rdkit_mol)
     pdb_obj = app.PDBFile(tmp_pdb.name)
+    print(f'Parameterizing with {force_field_code_default[force_field_type]}')
     if force_field_type == 'openff':
         system = smirnoff.ForceField(force_field_code_default[force_field_type]).create_openmm_system(molecule.to_topology())
     else:
@@ -341,7 +342,7 @@ class Parameterize:
             more information. Its default value will dynamically change depending on force_field_type as:
             * openff -> openff_unconstrained-2.0.0.offxml
             * gaff -> gaff-2.11
-            * espaloma -> espaloma-0.2.2
+            * espaloma -> espaloma-0.3.1
         ext_types : List[str], optional
             Any extension from:
             'pdb', 'pqr', 'cif','pdbx',
