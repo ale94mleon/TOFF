@@ -29,6 +29,7 @@ jobs:
     - name: Install dependencies from conda
       run: |
         conda install -y -c conda-forge openmm openff-toolkit openmmforcefields
+        conda install -c conda-forge -c dglteam "espaloma=0.3.1" "dgl<1"
     - name: Install pip dependencies and toff on test mode
       run: |
         python -m pip install --upgrade pip
@@ -67,6 +68,7 @@ jobs:
     - name: Install dependencies from conda
       run: |
         conda install -y -c conda-forge openmm openff-toolkit openmmforcefields
+        conda install -c conda-forge -c dglteam "espaloma=0.3.1" "dgl<1"
     - name: Install pip dependencies and toff on test mode
       run: |
         python -m pip install --upgrade pip
