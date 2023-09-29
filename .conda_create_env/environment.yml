@@ -2,15 +2,21 @@ name: toff
 channels:
   - conda-forge
 dependencies:
+  # - openmm
+  # - openff-toolkit
+  # - openmmforcefields
+  - ipykernel
+  - ipython
+  - ipywidgets
   - pip
-  - python==3.*
-  - openmm
-  - openff-toolkit
-  - openmmforcefields
+  - python==3.9.*
   - nbsphinx
-  - sphinx 
+  - sphinx==5.3.0
+  - conda-build
   - pip:
     - parmed
     - pyyaml
+    - sphinx_copybutton
+    - myst_nb
     - recommonmark
-    - sphinx_rtd_theme
+    - sphinx_book_theme

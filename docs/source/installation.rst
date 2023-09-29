@@ -44,6 +44,12 @@ Then install the dependencies libraries:
 
 ..  In the future we will consider to use the python modules `vina on pypi <https://pypi.org/project/vina/>`_. Finally:
 
+To use Espaloma force fields, you must:
+
+.. code-block:: bash
+
+    conda install -c conda-forge -c dglteam "espaloma=0.3.1" "dgl<1"
+
 pip install
 ~~~~~~~~~~~
 

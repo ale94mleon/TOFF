@@ -1,0 +1,79 @@
+[build-system]
+requires=[
+	"setuptools>=61.0",
+	"versioningit",
+]
+build-backend = "setuptools.build_meta"
+
+[project.urls]
+"Hompage" = "https://github.com/ale94mleon/toff"
+"Discussions" = "https://github.com/ale94mleon/toff/discussions"
+"Documentation" = "https://toff.readthedocs.io/en/latest/"
+"Issues" = "https://github.com/ale94mleon/toff/issues"
+
+[project]
+name = "toff"
+dynamic = ["version"]
+description = "off is a python package to get topologies from the OpenFF initiative."
+readme = "README.rst"
+
+authors=[
+    {name="Alejandro Martínez-León", email="ale94mleon@gmail.com"},
+]
+
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Scientific/Engineering :: Physics"
+]
+keywords = [
+    "science",
+    "chemistry",
+    "biology",
+    "drug-design",
+    "molecular-dynamic",
+]
+
+requires-python = "> 3.8 , < 3.11"
+dependencies = [
+    "pyyaml",
+    "parmed",
+    "rdkit"
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.versioningit]
+default-version = "1+unknown"
+
+[tool.versioningit.format]
+distance = "{base_version}"
+dirty = "{base_version}"
+distance-dirty = "{base_version}"
+
+[tool.versioningit.vcs]
+method = "git" 
+match = ["*"]
+default-tag = "0.0.0"
+
+[tool.versioningit.write]
+file = "src/toff/_version.py"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+
+[project.scripts]
+parameterize = "toff.cli:__parameterize_cmd"

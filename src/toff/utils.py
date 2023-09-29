@@ -246,7 +246,7 @@ def safe_naming(ligand_structure:parmed.structure.Structure, prefix:str = 'z', i
 
 def generate_structure(rdkit_mol:Chem.rdchem.Mol, force_field_type:str = 'openff', force_field_code:str = None) -> parmed.structure.Structure:
     """Generate a Structure object with the topology information from the specified force field.
-    OpenFF, GAFF and Espaloma flawors are supported
+    OpenFF, GAFF and Espaloma flavors are supported
 
     Parameters
     ----------
