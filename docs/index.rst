@@ -13,6 +13,7 @@ Welcome to TOFF's documentation!
 
    source/installation
    source/citations
+   source/about_us
    source/CHANGELOG
 
 .. toctree::
