@@ -1,5 +1,6 @@
 TOFF
 =======
+|logo|
 
 .. list-table::
     :widths: 12 35
@@ -26,12 +27,11 @@ TOFF
 Description
 -----------
 
-**TOFF** (Topologies from OpenFF) is a python package initially developed to get topologies from the OpenFF initiative.
-It was strongly inspired in this `Aniket's script <https://github.com/aniketsh/OpenFF/blob/82a2b5803e36b72f3525e3b8631cf256fbd8e35a/openff_topology.py>`__.
-Since version **0.1.0** it is alos possible to get `GAFF <https://ambermd.org/antechamber/gaff.html>`__ and
+**TOFF** (Topologies from OpenFF) is a Python package initially developed to get topologies from the OpenFF initiative. It was strongly inspired in this `Aniket's script <https://github.com/aniketsh/OpenFF/blob/82a2b5803e36b72f3525e3b8631cf256fbd8e35a/openff_topology.py>`__.
+
+Since version **0.1.0** it is also possible to get `GAFF <https://ambermd.org/antechamber/gaff.html>`__ and
 `Espaloma <https://docs.espaloma.org/en/latest/>`__ parameters by using **EspalomaTemplateGenerator** and **GAFFTemplateGenerator**
 from `openmmforcefields.generators <https://github.com/openmm/openmmforcefields/tree/main/openmmforcefields/generators>`__.
-
 
 You can try it out prior to any installation on `Binder <https://mybinder.org/v2/gh/ale94mleon/TOFF/HEAD?labpath=%2Fdocs%2Fnotebooks%2F>`__.
 
@@ -61,7 +61,9 @@ Funding
 This project received funding from `Marie Skłodowska-Curie Actions <https://cordis.europa.eu/project/id/860592>`__. It was developed in the 
 `Computational Biophysics Group <https://biophys.uni-saarland.de/>`__ of `Saarland University <https://www.uni-saarland.de/en/home.html>`__.
 
-
+..  |logo|  image:: https://github.com/ale94mleon/toff/blob/main/docs/source/_static/logo.png?raw=true
+    :target: https://github.com/ale94mleon/toff/
+    :alt: logo
 ..  |docs|  image:: https://readthedocs.org/projects/toff/badge/?version=latest
     :target: https://toff.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation
