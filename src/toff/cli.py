@@ -6,8 +6,13 @@ For information of TOFF:
     Source Code: https://github.com/ale94mleon/TOFF
 """
 
-from toff import __version__, Parameterize
-import yaml, argparse, warnings
+import argparse
+import warnings
+
+import yaml
+
+from toff import Parameterize, __version__
+
 
 def __parameterize_cmd():
     parser = argparse.ArgumentParser(description=__doc__,
@@ -25,8 +30,8 @@ def __parameterize_cmd():
     print(f"You are using toff:{__version__}")
     with open(args.yaml_file, 'r') as c:
         Config = yaml.safe_load(c)
-    InitKwargs = ['force_field_code','ext_types','hmr_factor','overwrite', 'safe_naming_prefix', 'out_dir']
-    CallKwargs = ['input_mol','mol_resi_name']
+    InitKwargs = ['force_field_code', 'ext_types', 'hmr_factor', 'overwrite', 'safe_naming_prefix', 'out_dir']
+    CallKwargs = ['input_mol', 'mol_resi_name']
 
     UserExtraNonValidKwargs = set(Config.keys()) - set(InitKwargs + CallKwargs)
     if 'input_mol' not in Config:

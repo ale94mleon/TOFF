@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import numpy as np
-import os, warnings, tempfile
+import os
+import tempfile
+import warnings
 from copy import deepcopy
+from typing import Iterable, List
+
+import numpy as np
+import parmed
+from openff.toolkit.topology import Molecule
+from openff.toolkit.typing.engines import smirnoff
+from openmm import app
 from rdkit import Chem
 from rdkit.Chem import AllChem
-from openff.toolkit.typing.engines import smirnoff
-from openff.toolkit.topology import Molecule
-from openmm import app
-import parmed
-from typing import List, Iterable
 
+# This module was strongly inspired in https://github.com/aniketsh/OpenFF/blob/82a2b5803e36b72f3525e3b8631cf256fbd8e35a/openff_topology.py
 
-#This module was strongly inspired in https://github.com/aniketsh/OpenFF/blob/82a2b5803e36b72f3525e3b8631cf256fbd8e35a/openff_topology.py
 
 def confgen(mol: Chem.rdchem.Mol):
     """Create a 3D model for the molecule only
@@ -40,7 +43,8 @@ def confgen(mol: Chem.rdchem.Mol):
 
     return mol
 
-def get_rdkit_mol(input_path_mol:str):
+
+def get_rdkit_mol(input_path_mol: str):
     """Get a file with a definition of a molecule and return the corresponded RDKit molecule object
     with a conformation if there not present.
 
@@ -92,7 +96,8 @@ def get_rdkit_mol(input_path_mol:str):
         warnings.warn("Molecule was not converted. Check the input")
     return mol
 
-def topology_writer(ligand_structure:parmed.structure.Structure, ext_types:List[str] = None, overwrite = False, out_dir:str = '.') -> None:
+
+def topology_writer(ligand_structure: parmed.structure.Structure, ext_types: List[str] = None, overwrite: bool = False, out_dir: str = '.') -> None:
     """A toff wrapper around the `save` method of :meth:`parmed.structure.Structure`
 
     Parameters
@@ -113,7 +118,7 @@ def topology_writer(ligand_structure:parmed.structure.Structure, ext_types:List[
     """
 
     valid_ext_types = [
-                'pdb', 'pqr', 'cif','pdbx',
+                'pdb', 'pqr', 'cif', 'pdbx',
                 'parm7', 'prmtop', 'psf', 'top',
                 'gro', 'mol2', 'mol3', 'crd',
                 'rst7', 'inpcrd', 'restrt', 'ncrst',
@@ -125,11 +130,12 @@ def topology_writer(ligand_structure:parmed.structure.Structure, ext_types:List[
         ext_type = ext_type.lower()
         if ext_type in valid_ext_types:
             path = os.path.join(out_dir, f"{ligand_structure.atoms[0].residue.name}.{ext_type}")
-            ligand_structure.save(path, overwrite = overwrite)
+            ligand_structure.save(path, overwrite=overwrite)
         else:
             warnings.warn(f"{ext_type} is not a valid extension type. Only: {valid_ext_types}")
 
-def get_partial_charges(ligand_structure:parmed.structure.Structure):
+
+def get_partial_charges(ligand_structure: parmed.structure.Structure):
     """get the partial charges from a :meth:`parmed.structure.Structure` object.
 
     Parameters
@@ -144,7 +150,8 @@ def get_partial_charges(ligand_structure:parmed.structure.Structure):
     """
     return np.array([atom.charge for atom in ligand_structure])
 
-def set_partial_charges(ligand_structure:Chem.rdchem.Mol, partial_charges:Iterable):
+
+def set_partial_charges(ligand_structure: Chem.rdchem.Mol, partial_charges: Iterable):
     """Set new partial charges to a :meth:`parmed.structure.Structure` object
 
     Parameters
@@ -163,7 +170,8 @@ def set_partial_charges(ligand_structure:Chem.rdchem.Mol, partial_charges:Iterab
         atom.charge = charge
     return ligand_structure
 
-def charge_sanitizer(rdkit_mol:Chem.rdchem.Mol, ligand_structure:parmed.structure.Structure, max_iter:int = 100):
+
+def charge_sanitizer(rdkit_mol: Chem.rdchem.Mol, ligand_structure: parmed.structure.Structure, max_iter: int = 100):
     """Check and correct (if needed) if the formal charge from the rdkit_mol is not the same as the sum of
     of the partial charges of the ligand_structure.
 
@@ -190,7 +198,7 @@ def charge_sanitizer(rdkit_mol:Chem.rdchem.Mol, ligand_structure:parmed.structur
 
     # Round up the formal charge
     for atom in ligand_structure:
-        atom.charge = round(atom.charge,7)
+        atom.charge = round(atom.charge, 7)
 
     partial_charges = get_partial_charges(ligand_structure)
     diff = round(partial_charges.sum() - formal_charge, 6)
@@ -215,7 +223,8 @@ def charge_sanitizer(rdkit_mol:Chem.rdchem.Mol, ligand_structure:parmed.structur
     #     print("No charge correction needed.")
     return ligand_structure
 
-def safe_naming(ligand_structure:parmed.structure.Structure, prefix:str = 'z', inplace:bool = True):
+
+def safe_naming(ligand_structure: parmed.structure.Structure, prefix: str = 'z', inplace: bool = True):
     """Add a prefix to the atom types in order to avoid
     incompatibilities with other force fields
 
@@ -244,7 +253,8 @@ def safe_naming(ligand_structure:parmed.structure.Structure, prefix:str = 'z', i
     else:
         return ligand_structure
 
-def generate_structure(rdkit_mol:Chem.rdchem.Mol, force_field_type:str = 'openff', force_field_code:str = None) -> parmed.structure.Structure:
+
+def generate_structure(rdkit_mol: Chem.rdchem.Mol, force_field_type: str = 'openff', force_field_code: str = None) -> parmed.structure.Structure:
     """Generate a Structure object with the topology information from the specified force field.
     OpenFF, GAFF and Espaloma flavors are supported
 
@@ -301,18 +311,19 @@ def generate_structure(rdkit_mol:Chem.rdchem.Mol, force_field_type:str = 'openff
         if force_field_type == 'gaff':
             # Create the GAFF template generator
             from openmmforcefields.generators import GAFFTemplateGenerator
-            template_generator = GAFFTemplateGenerator(molecules=molecule, forcefield = force_field_code_default[force_field_type])
+            template_generator = GAFFTemplateGenerator(molecules=molecule, forcefield=force_field_code_default[force_field_type])
         elif force_field_type == 'espaloma':
             # Create the Espaloma template generator
             from openmmforcefields.generators import EspalomaTemplateGenerator
-            template_generator = EspalomaTemplateGenerator(molecules=molecule, forcefield = force_field_code_default[force_field_type])
-            
+            template_generator = EspalomaTemplateGenerator(molecules=molecule, forcefield=force_field_code_default[force_field_type])
+
         forcefield_obj.registerTemplateGenerator(template_generator.generator)
         system = forcefield_obj.createSystem(pdb_obj.topology)
-    
-    structure = parmed.openmm.load_topology(pdb_obj.topology, system = system, xyz = pdb_obj.positions)
+
+    structure = parmed.openmm.load_topology(pdb_obj.topology, system=system, xyz=pdb_obj.positions)
     tmp_pdb.close()
     return structure
+
 
 class Parameterize:
     """This is the main class for the parameterization
@@ -320,13 +331,13 @@ class Parameterize:
 
     def __init__(
             self,
-            force_field_type:str = 'openff',
-            force_field_code:str = None,
-            ext_types:List[str] = None,
-            hmr_factor:float = None,
-            overwrite:bool = False,
-            safe_naming_prefix:str = None,
-            out_dir:str = '.',
+            force_field_type: str = 'openff',
+            force_field_code: str = None,
+            ext_types: List[str] = None,
+            hmr_factor: float = None,
+            overwrite: bool = False,
+            safe_naming_prefix: str = None,
+            out_dir: str = '.',
             ) -> None:
         """This is the constructor of the class.
         GAFF and Espaloma capabilities came on version toff:0.1.0
@@ -382,7 +393,7 @@ class Parameterize:
             f"overwrite = {self.overwrite}, safe_naming_prefix = {self.safe_naming_prefix}, "\
             f"out_dir = {self.out_dir})"
 
-    def __call__(self,  input_mol, mol_resi_name:str = "MOL"):
+    def __call__(self,  input_mol, mol_resi_name: str = "MOL"):
         """This class is callable. And this is its implementation.
         it will return the specified files (ext_types in __init__) in the directory out_dir.
 
@@ -406,7 +417,7 @@ class Parameterize:
         if isinstance(input_mol, Chem.rdchem.Mol):
             rdkit_mol = confgen(input_mol)
         elif isinstance(input_mol, str):
-            rdkit_mol = get_rdkit_mol(input_path_mol = input_mol)
+            rdkit_mol = get_rdkit_mol(input_path_mol=input_mol)
         else:
             raise Exception(f'input_mol must be an instance of Chem.rdchem.Mol or str. But it is {type(input_mol)}')
 
@@ -414,14 +425,15 @@ class Parameterize:
             warnings.warn(f"mol_resi_name = {mol_resi_name} is to large. consider to use a code with no more than 4 characters.")
 
         # Create if needed the output directory
-        if not os.path.isdir(self.out_dir): os.makedirs(self.out_dir)
+        if not os.path.isdir(self.out_dir):
+            os.makedirs(self.out_dir)
 
         ligand_structure = generate_structure(
-            rdkit_mol = rdkit_mol,
-            force_field_type = self.force_field_type,
-            force_field_code = self.force_field_code
+            rdkit_mol=rdkit_mol,
+            force_field_type=self.force_field_type,
+            force_field_code=self.force_field_code
         )
-        
+
         # Make Hydrogens Heavy for 4fs timestep
         if self.hmr_factor:
             parmed.tools.HMassRepartition(ligand_structure, self.hmr_factor).execute()
@@ -431,16 +443,16 @@ class Parameterize:
             atom.residue.name = mol_resi_name
 
         # Correct charges if needed
-        ligand_structure = charge_sanitizer(rdkit_mol = rdkit_mol, ligand_structure = ligand_structure)
+        ligand_structure = charge_sanitizer(rdkit_mol=rdkit_mol, ligand_structure=ligand_structure)
 
         # Write the output topologies
         if self.safe_naming_prefix:
             safe_naming(ligand_structure, prefix=self.safe_naming_prefix, inplace=True)
         topology_writer(
-            ligand_structure = ligand_structure,
-            ext_types = self.ext_types,
-            out_dir = self.out_dir,
-            overwrite = self.overwrite,
+            ligand_structure=ligand_structure,
+            ext_types=self.ext_types,
+            out_dir=self.out_dir,
+            overwrite=self.overwrite,
         )
 
 

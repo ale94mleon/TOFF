@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build_ubuntu:
+  build:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
