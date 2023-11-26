@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macOS-latest] #windows-latest (vina is not available for windows in conda-forge),m think about use bioconda autodock-vina
-        python-version: [3.9, '3.10'] # 3.8, 
+        python-version: [3.9, '3.10'] # 3.8,
         exclude:
           - os: macOS-latest
             python-version: '3.10'
@@ -49,4 +49,5 @@ jobs:
       run: |
         pytest --cov toff
     - name: Upload coverage reports to Codecov with GitHub Action
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.9'
       uses: codecov/codecov-action@v3
