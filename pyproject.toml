@@ -14,7 +14,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "toff"
 dynamic = ["version"]
-description = "off is a python package to get topologies from the OpenFF initiative."
+description = "toff is a python package to get topologies from the OpenFF initiative."
 readme = "README.rst"
 
 authors=[
@@ -61,7 +61,7 @@ dirty = "{base_version}"
 distance-dirty = "{base_version}"
 
 [tool.versioningit.vcs]
-method = "git" 
+method = "git"
 match = ["*"]
 default-tag = "0.0.0"
 
