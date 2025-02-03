@@ -33,7 +33,7 @@ Create conda environment and install conda dependencies
 
 .. code-block:: bash
 
-    conda create -n TOFF
+    conda create -n TOFF python"=3.10.0"
     conda activate TOFF
 
 Then install the dependencies libraries:
@@ -49,6 +49,8 @@ To use Espaloma force fields, you must:
 .. code-block:: bash
 
     conda install -c conda-forge -c dglteam "espaloma=0.3.1" "dgl<1"
+
+For M chips may not be possible the installation of Espaloma.
 
 pip install
 ~~~~~~~~~~~
