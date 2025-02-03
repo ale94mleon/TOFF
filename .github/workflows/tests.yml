@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macOS-latest] #windows-latest (vina is not available for windows in conda-forge),m think about use bioconda autodock-vina
+        os: [ubuntu-latest] #macOS-latest #windows-latest
         python-version: [3.9, '3.10'] # 3.8,
         exclude:
           - os: macOS-latest
