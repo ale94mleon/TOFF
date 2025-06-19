@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.0]-2025.06.19
 
-## Add
+### Add
 
 - `pytest.ini` for better handling of warning during test.
 
