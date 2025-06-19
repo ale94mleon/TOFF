@@ -31,7 +31,7 @@ jobs:
           openff-toolkit
           openmm
           openmmforcefields
-          "espaloma=0.3.2"
+          espaloma=0.3.2
         init-shell: bash
         cache-environment: true
         post-cleanup: 'environment'
