@@ -16,10 +16,10 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macOS-latest] #windows-latest
-        python-version: ['3.9', '3.10', "3.11", "3.12"]
-        # exclude:
-        #   - os: macOS-latest
-        #     python-version: '3.10'
+        python-version: ['3.10', "3.11", "3.12"]
+        exclude:
+          - os: macOS-latest
+            python-version: '3.9'
     steps:
     - uses: actions/checkout@v4
     - name: Setup micromamba
@@ -37,21 +37,27 @@ jobs:
         post-cleanup: 'environment'
         generate-run-shell: true
     - name: Install pip dependencies and toff on test mode
+      shell: bash -l {0}
       run: |
+        source /home/runner/work/_temp/setup-micromamba/ci-run.sh
         python -m pip install --upgrade pip
         python -m pip install flake8
         pip install -e '.[dev]'
         python -m pip install pytest-cov
     - name: Lint with flake8
+      shell: bash -l {0}
       run: |
+        source /home/runner/work/_temp/setup-micromamba/ci-run.sh
         # stop the build if there are Python syntax errors or undefined names
         flake8 src/toff --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 src/toff --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
         echo after "Lint with flake8" My python version is actually: $(python --version).
     - name: Test with pytest
+      shell: bash -l {0}
       run: |
+        source /home/runner/work/_temp/setup-micromamba/ci-run.sh
         python -m pytest tests --cov toff
     - name: Upload coverage reports to Codecov with GitHub Action
-      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.9'
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.10'
       uses: codecov/codecov-action@v3
