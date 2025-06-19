@@ -42,7 +42,7 @@ keywords = [
     "molecular-dynamic",
 ]
 
-requires-python = "> 3.8 , < 3.11"
+requires-python = "> 3.8"
 dependencies = [
     "pyyaml",
     "parmed",
