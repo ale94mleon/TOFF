@@ -10,13 +10,13 @@ dependencies:
   - ipywidgets
   - pip
   - python==3.9.*
-  - nbsphinx
-  - sphinx==5.3.0
   - conda-build
   - pip:
-    - parmed
-    - pyyaml
-    - sphinx_copybutton
-    - myst_nb
-    - recommonmark
+    - myst-nb
+    - myst-parser
     - sphinx_book_theme
+    - sphinx==7.2.6
+    - sphinx_design
+    - sphinxcontrib-katex
+    - sphinx-inline-tabs
+    - sphinx_copybutton
