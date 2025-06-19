@@ -30,7 +30,6 @@ author = 'Alejandro Martínez León'
 # -- General configuration ---------------------------------------------------
 
 github_doc_root = 'https://github.com/ale94mleon/toff/tree/main/docs'
-needs_sphinx = '"5.3.0"'
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -43,13 +42,13 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
     "sphinx.ext.autosectionlabel",
-    "recommonmark",
     "IPython.sphinxext.ipython_console_highlighting",
     "IPython.sphinxext.ipython_directive",
     "myst_nb",
+    "sphinx_design",
+    "sphinx_inline_tabs",
     "sphinx_copybutton",
 ]
-
 
 myst_enable_extensions = [
     "colon_fence",

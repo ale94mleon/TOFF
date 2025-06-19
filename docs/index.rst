@@ -6,34 +6,29 @@
 Welcome to TOFF's documentation!
 ===================================
 .. include:: ../README.rst
+   
+Index
+-----
 
 .. toctree::
-   :caption: User guide
-   :maxdepth: 2
+   :maxdepth: 1
 
    source/installation
    source/citations
-   source/about_us
+   source/about-us
+   
+   source/tutorials
+
+.. toctree::
+   :caption: 📖 Reference
+   :maxdepth: 1
+   
+   source/summary
    source/CHANGELOG
-
-.. toctree::
-   :caption: Tutorials
-   :numbered:
-
-   notebooks/quickstart
-   notebooks/how_to
-   notebooks/oncoming
-
-.. toctree::
-   :caption: Documentation
-   :maxdepth: 2
-   :glob:
-
-   source/api
-   source/modules/*
+   source/api-reference
 
 Indices and tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
