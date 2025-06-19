@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Espaloma force field generation is handling directly and not through `openmmforcefields.generators`.
 - Easy installation and dependencies handling. [micromamba](https://mamba.readthedocs.io/en/latest/user_guide/micromamba.html) is now the preferred environment manager.
 - Improve code covering and code grading.
+- CI for upload to PyPi.
 
 ## [0.1.0]-2023.07.27
 
