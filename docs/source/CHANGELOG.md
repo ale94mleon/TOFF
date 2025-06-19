@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+## [0.2.0]-2025.06.19
+
 ## Add
 
 - `pytest.ini` for better handling of warning during test.
@@ -20,8 +22,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Espaloma force field is available on MacOS.
 - Espaloma force field generation is handling directly and not through `openmmforcefields.generators`.
 - Easy installation and dependencies handling. [micromamba](https://mamba.readthedocs.io/en/latest/user_guide/micromamba.html) is now the preferred environment manager.
+- Improve code covering and code grading.
 
-## [0.1.0]  - 2023.07.27
+## [0.1.0]-2023.07.27
 
 ### Added
 
@@ -34,14 +37,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - gaff -> gaff-2.11
   - espaloma -> espaloma-0.2.2
 
-## [0.0.2]  - 2023.03.27
+## [0.0.2]-2023.03.27
 
 ### Added
 
 - {py:func}`toff.utils.get_rdkit_mol` accept `sdf` molecules too. Only the first molecule/conformer will be used.
 - Example using the `safe_naming_prefix` on {py:class}`toff.utils.Parameterize`.
 
-## [0.0.1] - 2023.01.08
+## [0.0.1]-2023.01.08
 
 ### Changed
 
@@ -61,7 +64,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Improve documentation
 
-[unreleased]: https://github.com/ale94mleon/TOFF/compare/0.1.0...HEAD
+[unreleased]: https://github.com/ale94mleon/TOFF/compare/0.2.0...HEAD
+[0.2.0]: https://github.com/ale94mleon/TOFF/compare/0.1.0...0.2.0
 [0.1.0]: https://github.com/ale94mleon/TOFF/compare/0.0.2...0.1.0
 [0.0.2]: https://github.com/ale94mleon/TOFF/compare/0.0.1...0.0.2
 [0.0.1]: https://github.com/ale94mleon/TOFF/compare/0.0.0-alpha2...0.0.1
