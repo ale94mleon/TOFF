@@ -27,7 +27,7 @@ jobs:
       with:
         environment-name: ci
         create-args: >-
-          "python=${{ matrix.python-version }}"
+          python={{ matrix.python-version }}
           openff-toolkit
           openmm
           openmmforcefields
