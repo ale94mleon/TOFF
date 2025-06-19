@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macOS-latest] #windows-latest
-        python-version: ['3.10', "3.11", "3.12"]
+        python-version: ['3.9', '3.10', "3.11", "3.12"]
         exclude:
           - os: macOS-latest
             python-version: '3.9'
@@ -57,7 +57,10 @@ jobs:
       shell: bash -l {0}
       run: |
         source /home/runner/work/_temp/setup-micromamba/ci-run.sh
-        python -m pytest tests --cov toff
-    - name: Upload coverage reports to Codecov with GitHub Action
-      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.10'
-      uses: codecov/codecov-action@v3
+        pytest tests --cov toff --cov-report xml
+    - name: Run codacy-coverage-reporter
+      uses: codacy/codacy-coverage-reporter-action@v1.3.0
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.9'
+      with:
+        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        coverage-reports: coverage.xml
