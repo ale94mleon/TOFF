@@ -306,19 +306,25 @@ def generate_structure(rdkit_mol: Chem.rdchem.Mol, force_field_type: str = 'open
     print(f'Parameterizing with {force_field_code_default[force_field_type]}')
     if force_field_type == 'openff':
         system = smirnoff.ForceField(force_field_code_default[force_field_type]).create_openmm_system(molecule.to_topology())
-    else:
+    elif force_field_type == 'gaff':
         forcefield_obj = app.ForceField()
-        if force_field_type == 'gaff':
-            # Create the GAFF template generator
-            from openmmforcefields.generators import GAFFTemplateGenerator
-            template_generator = GAFFTemplateGenerator(molecules=molecule, forcefield=force_field_code_default[force_field_type])
-        elif force_field_type == 'espaloma':
-            # Create the Espaloma template generator
-            from openmmforcefields.generators import EspalomaTemplateGenerator
-            template_generator = EspalomaTemplateGenerator(molecules=molecule, forcefield=force_field_code_default[force_field_type])
-
+        # Create the GAFF template generator
+        from openmmforcefields.generators import GAFFTemplateGenerator
+        template_generator = GAFFTemplateGenerator(molecules=molecule, forcefield=force_field_code_default[force_field_type])
         forcefield_obj.registerTemplateGenerator(template_generator.generator)
         system = forcefield_obj.createSystem(pdb_obj.topology)
+    elif force_field_type == 'espaloma':
+        import espaloma as esp
+        # create an Espaloma Graph object to represent the molecule of interest
+        molecule_graph = esp.Graph(molecule)
+        # load pretrained model
+        espaloma_model = esp.get_model(version=force_field_code_default[force_field_type].split("espaloma-")[-1])
+        # apply a trained espaloma model to assign parameters
+        espaloma_model(molecule_graph.heterograph)
+        # create an OpenMM System for the specified molecule
+        system = esp.graphs.deploy.openmm_system_from_graph(molecule_graph)
+    else:
+        raise ValueError(f"{force_field_type} is not valid, select from {force_field_code_default.keys()}")
 
     structure = parmed.openmm.load_topology(pdb_obj.topology, system=system, xyz=pdb_obj.positions)
     tmp_pdb.close()
