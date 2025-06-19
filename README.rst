@@ -10,7 +10,7 @@ TOFF
     * - **Tutorials**
       - |binder|
     * - **CI/CD**
-      - |tests| |codecov| |codacy| |CodeQL|
+      - |tests| |codecov| |codacy|
     * - **Build**
       - |pypi-version|
     * - **Source Code**
@@ -30,8 +30,7 @@ Description
 **TOFF** (Topologies from OpenFF) is a Python package initially developed to get topologies from the OpenFF initiative. It was strongly inspired in this `Aniket's script <https://github.com/aniketsh/OpenFF/blob/82a2b5803e36b72f3525e3b8631cf256fbd8e35a/openff_topology.py>`__.
 
 Since version **0.1.0** it is also possible to get `GAFF <https://ambermd.org/antechamber/gaff.html>`__ and
-`Espaloma <https://docs.espaloma.org/en/latest/>`__ parameters by using **EspalomaTemplateGenerator** and **GAFFTemplateGenerator**
-from `openmmforcefields.generators <https://github.com/openmm/openmmforcefields/tree/main/openmmforcefields/generators>`__.
+`Espaloma <https://docs.espaloma.org/en/latest/>`__.
 
 You can try it out prior to any installation on `Binder <https://mybinder.org/v2/gh/ale94mleon/TOFF/HEAD?labpath=%2Fdocs%2Fnotebooks%2F>`__.
 
@@ -64,6 +63,7 @@ This project received funding from `Marie Skłodowska-Curie Actions <https://cor
 ..  |logo|  image:: https://github.com/ale94mleon/toff/blob/main/docs/source/_static/logo.png?raw=true
     :target: https://github.com/ale94mleon/toff/
     :alt: logo
+
 ..  |docs|  image:: https://readthedocs.org/projects/toff/badge/?version=latest
     :target: https://toff.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation
@@ -76,17 +76,13 @@ This project received funding from `Marie Skłodowska-Curie Actions <https://cor
     :target: https://github.com/ale94mleon/TOFF/actions/workflows/tests.yml
     :alt: tests
 
-..  |codecov| image:: https://codecov.io/gh/ale94mleon/TOFF/branch/main/graph/badge.svg?token=1lAwiIgp3z 
-    :target: https://codecov.io/gh/ale94mleon/TOFF
+..  |codecov| image::  https://app.codacy.com/project/badge/Coverage/53c53c810b3c4767ab76f5d622ec6aef
+    :target: hhttps://app.codacy.com/gh/ale94mleon/TOFF/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage
     :alt: codecov
 
 ..  |codacy| image:: https://app.codacy.com/project/badge/Grade/53c53c810b3c4767ab76f5d622ec6aef
-    :target: https://www.codacy.com/gh/ale94mleon/TOFF/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ale94mleon/TOFF&amp;utm_campaign=Badge_Grade
+    :target: https://app.codacy.com/gh/ale94mleon/TOFF/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade
     :alt: codacy
-
-..  |CodeQL| image:: https://github.com/ale94mleon/TOFF/actions/workflows/codeql-analysis.yml/badge.svg
-    :target: https://github.com/ale94mleon/TOFF/actions/workflows/codeql-analysis.yml
-    :alt: CodeQL
 
 ..  |pypi-version|  image:: https://img.shields.io/pypi/v/TOFF.svg
     :target: https://pypi.python.org/pypi/TOFF/

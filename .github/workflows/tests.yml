@@ -36,7 +36,7 @@ jobs:
         cache-environment: true
         post-cleanup: 'environment'
         generate-run-shell: true
-    - name: Install pip dependencies and toff on test mode
+    - name: Install pip dependencies and toff on dev mode
       shell: bash -l {0}
       run: |
         source /home/runner/work/_temp/setup-micromamba/ci-run.sh
