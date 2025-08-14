@@ -14,7 +14,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "toff"
 dynamic = ["version"]
-description = "toff is a python package to get topologies from the OpenFF initiative."
+description = "toff is a python package to get topologies from open force fields."
 readme = "README.rst"
 
 authors=[

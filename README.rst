@@ -27,7 +27,7 @@ TOFF
 Description
 -----------
 
-**TOFF** (Topologies from OpenFF) is a Python package initially developed to get topologies from the OpenFF initiative. It was strongly inspired in this `Aniket's script <https://github.com/aniketsh/OpenFF/blob/82a2b5803e36b72f3525e3b8631cf256fbd8e35a/openff_topology.py>`__.
+**TOFF** (Topologies from Open Force Fields) is a Python package initially developed to get topologies from the OpenFF initiative. Now it is possible to get GAFF and Espaloma topological parameters as well. It was strongly inspired in this `Aniket's script <https://github.com/aniketsh/OpenFF/blob/82a2b5803e36b72f3525e3b8631cf256fbd8e35a/openff_topology.py>`__.
 
 Since version **0.1.0** it is also possible to get `GAFF <https://ambermd.org/antechamber/gaff.html>`__ and
 `Espaloma <https://docs.espaloma.org/en/latest/>`__.
