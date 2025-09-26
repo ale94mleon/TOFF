@@ -31,6 +31,8 @@ jobs:
           openff-toolkit
           openmm
           openmmforcefields
+          importlib-resources
+          parmed
           espaloma=0.3.2
         init-shell: bash
         cache-environment: true
