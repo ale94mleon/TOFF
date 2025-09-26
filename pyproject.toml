@@ -18,7 +18,7 @@ description = "toff is a python package to get topologies from open force fields
 readme = "README.rst"
 
 authors=[
-    {name="Alejandro Martínez-León", email="ale94mleon@gmail.com"},
+    {name="Alejandro Martínez León", email="ale94mleon@gmail.com"},
 ]
 
 classifiers = [
@@ -47,7 +47,6 @@ keywords = [
 requires-python = "> 3.8"
 dependencies = [
     "pyyaml",
-    "parmed",
     "rdkit"
 ]
 
@@ -58,9 +57,9 @@ dev = ["pytest"]
 default-version = "1+unknown"
 
 [tool.versioningit.format]
-distance = "{base_version}"
-dirty = "{base_version}"
-distance-dirty = "{base_version}"
+distance = "{base_version}.post{distance}"
+dirty = "{base_version}.post{distance}.dev0"
+distance-dirty = "{base_version}.post{distance}.dev0"
 
 [tool.versioningit.vcs]
 method = "git"

@@ -18,3 +18,4 @@ dist
 public
 
 toff.egg-info
+src/toff/_version.py
