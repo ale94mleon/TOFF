@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""Build topologies of small molecules with the OpenFF, GAFF and Espaloma force fields.
+
+This module was strongly inspired by
+https://github.com/aniketsh/OpenFF/blob/82a2b5803e36b72f3525e3b8631cf256fbd8e35a/openff_topology.py
+"""
 import os
 import tempfile
 import warnings
@@ -14,23 +19,22 @@ from openmm import app
 from rdkit import Chem
 from rdkit.Chem import AllChem
 
-# This module was strongly inspired in https://github.com/aniketsh/OpenFF/blob/82a2b5803e36b72f3525e3b8631cf256fbd8e35a/openff_topology.py
-
 
 def confgen(mol: Chem.rdchem.Mol):
-    """Create a 3D model for the molecule only
-    if there are not any available. If there some available but
-    it does not have Hs, they will be added.
+    """Generate a 3D conformation for the molecule if it has none.
+
+    Explicit hydrogens are added if missing; when the molecule already has a
+    conformation, the new hydrogens get coordinates consistent with it.
 
     Parameters
     ----------
-    smiles : Chem.rdchem.Mol
+    mol : Chem.rdchem.Mol
         A valid RDKit molecule.
 
     Returns
     -------
     Chem.rdchem.Mol
-        A new instance of the input molecule with a conformation if inplace = False, if not None
+        The molecule with explicit hydrogens and a 3D conformation.
     """
     if mol.GetConformers():
         if mol.GetNumAtoms() == Chem.RemoveHs(mol).GetNumAtoms():
@@ -45,13 +49,14 @@ def confgen(mol: Chem.rdchem.Mol):
 
 
 def get_rdkit_mol(input_path_mol: str):
-    """Get a file with a definition of a molecule and return the corresponded RDKit molecule object
-    with a conformation if there not present.
+    """Read a molecule from a file and return it as an RDKit molecule.
+
+    A 3D conformation is generated if the file does not provide one (see :func:`confgen`).
 
     Parameters
     ----------
     input_path_mol : str
-        The path were the file molecule is. Only the foll, following extensions are valid:
+        Path to the molecule file. Only the following extensions are valid:
 
         * ``inchi`` (only the first line of the file will be considered and should be a valid InChi string)
         * ``smi`` (only the first line of the file will be considered and should be a valid SMILES string)
@@ -69,7 +74,6 @@ def get_rdkit_mol(input_path_mol: str):
     NotImplementedError
         In case of an invalid extension.
     """
-
     extension = os.path.basename(input_path_mol).split('.')[-1]
 
     if extension == 'inchi':
@@ -98,12 +102,15 @@ def get_rdkit_mol(input_path_mol: str):
 
 
 def topology_writer(ligand_structure: parmed.structure.Structure, ext_types: List[str] = None, overwrite: bool = False, out_dir: str = '.') -> None:
-    """A toff wrapper around the `save` method of :meth:`parmed.structure.Structure`
+    """Write the topology and coordinate files of a structure.
+
+    This is a wrapper around the ``save`` method of :class:`parmed.structure.Structure`.
+    The files are named after the residue name of the first atom.
 
     Parameters
     ----------
     ligand_structure : parmed.structure.Structure
-        _description_
+        The Structure to write.
     ext_types : List[str], optional
         Any extension from:
         'pdb', 'pqr', 'cif','pdbx',
@@ -116,7 +123,6 @@ def topology_writer(ligand_structure: parmed.structure.Structure, ext_types: Lis
     out_dir : str, optional
         Where the files will be written, by default '.'
     """
-
     valid_ext_types = [
                 'pdb', 'pqr', 'cif', 'pdbx',
                 'parm7', 'prmtop', 'psf', 'top',
@@ -136,7 +142,7 @@ def topology_writer(ligand_structure: parmed.structure.Structure, ext_types: Lis
 
 
 def get_partial_charges(ligand_structure: parmed.structure.Structure):
-    """get the partial charges from a :meth:`parmed.structure.Structure` object.
+    """Get the partial charges from a :class:`parmed.structure.Structure` object.
 
     Parameters
     ----------
@@ -146,24 +152,24 @@ def get_partial_charges(ligand_structure: parmed.structure.Structure):
     Returns
     -------
     numpy.array
-        A numpy array of partial charges
+        A numpy array of partial charges.
     """
     return np.array([atom.charge for atom in ligand_structure])
 
 
-def set_partial_charges(ligand_structure: Chem.rdchem.Mol, partial_charges: Iterable):
-    """Set new partial charges to a :meth:`parmed.structure.Structure` object
+def set_partial_charges(ligand_structure: parmed.structure.Structure, partial_charges: Iterable):
+    """Set new partial charges on a :class:`parmed.structure.Structure` object.
 
     Parameters
     ----------
-    ligand_structure : Chem.rdchem.Mol
-        Here is the Structure object were the partial charges will be set.
+    ligand_structure : parmed.structure.Structure
+        The Structure whose partial charges will be set.
     partial_charges : Iterable
-        New partial charges to set. Should have the same len as atoms in ligand_structure
+        New partial charges, one per atom of ligand_structure.
 
     Returns
     -------
-    Chem.rdchem.Mol
+    parmed.structure.Structure
         The ligand_structure with the new set of partial charges.
     """
     for charge, atom in zip(partial_charges, ligand_structure):
@@ -172,21 +178,24 @@ def set_partial_charges(ligand_structure: Chem.rdchem.Mol, partial_charges: Iter
 
 
 def charge_sanitizer(rdkit_mol: Chem.rdchem.Mol, ligand_structure: parmed.structure.Structure, max_iter: int = 100):
-    """Check and correct (if needed) if the formal charge from the rdkit_mol is not the same as the sum of
-    of the partial charges of the ligand_structure.
+    """Make the partial charges add up to the formal charge of the molecule.
+
+    The sum of the partial charges of ligand_structure is compared with the formal
+    charge of rdkit_mol, and the partial charges are corrected if they differ.
 
     Parameters
     ----------
     rdkit_mol : Chem.rdchem.Mol
         A rdkit mol representation of ligand_structure.
     ligand_structure : parmed.structure.Structure
-        The Structure where the charges must be check.
-    max_iter : int
-        The total amount of iterations in case that the charges need to be fixed.
+        The Structure whose charges will be checked.
+    max_iter : int, optional
+        The maximum number of iterations used to correct the charges, by default 100
+
     Returns
     -------
     parmed.structure.Structure
-        ligand_structure with the corrected partial charges
+        ligand_structure with the corrected partial charges.
     """
     # if random_state:
     #     prng = np.random.RandomState(random_state)
@@ -225,22 +234,21 @@ def charge_sanitizer(rdkit_mol: Chem.rdchem.Mol, ligand_structure: parmed.struct
 
 
 def safe_naming(ligand_structure: parmed.structure.Structure, prefix: str = 'z', inplace: bool = True):
-    """Add a prefix to the atom types in order to avoid
-    incompatibilities with other force fields
+    """Add a prefix to the atom types to avoid clashes with other force fields.
 
     Parameters
     ----------
     ligand_structure : parmed.structure.Structure
-        The Structure with the topologies
+        The Structure with the topologies.
     prefix : str, optional
-        The string to add at the begging of the atom types, by default 'z'
+        The string to add at the beginning of the atom types, by default 'z'
     inplace : bool, optional
-        TO modify inplace the structure, by default True
+        If True, modify the Structure in place, by default True
 
     Returns
     -------
-    parmed.structure.Structure
-        Return a copy of the Structure or if inplace False or None otherwise.
+    parmed.structure.Structure or None
+        A modified copy of the Structure if inplace is False, otherwise None.
     """
     if not inplace:
         ligand_structure = deepcopy(ligand_structure)
@@ -255,8 +263,9 @@ def safe_naming(ligand_structure: parmed.structure.Structure, prefix: str = 'z',
 
 
 def generate_structure(rdkit_mol: Chem.rdchem.Mol, force_field_type: str = 'openff', force_field_code: str = None) -> parmed.structure.Structure:
-    """Generate a Structure object with the topology information from the specified force field.
-    OpenFF, GAFF and Espaloma flavors are supported
+    """Generate a Structure with the topology from the specified force field.
+
+    OpenFF, GAFF and Espaloma force fields are supported.
 
     Parameters
     ----------
@@ -332,8 +341,7 @@ def generate_structure(rdkit_mol: Chem.rdchem.Mol, force_field_type: str = 'open
 
 
 class Parameterize:
-    """This is the main class for the parameterization
-    """
+    """Parameterize small molecules with OpenFF, GAFF or Espaloma."""
 
     def __init__(
             self,
@@ -345,8 +353,9 @@ class Parameterize:
             safe_naming_prefix: str = None,
             out_dir: str = '.',
             ) -> None:
-        """This is the constructor of the class.
-        GAFF and Espaloma capabilities came on version toff:0.1.0
+        """Set the force field and the output options.
+
+        GAFF and Espaloma support was added in TOFF 0.1.0.
 
         Parameters
         ----------
@@ -380,7 +389,6 @@ class Parameterize:
         out_dir : str, optional
             Where the files will be written, by default '.'
         """
-
         self.force_field_code = force_field_code
         self.force_field_type = force_field_type.lower()
         self.ext_types = ext_types
@@ -390,6 +398,7 @@ class Parameterize:
         self.out_dir = os.path.abspath(out_dir)
 
     def __repr__(self) -> str:
+        """Return a readable summary of the parameterization settings."""
         ext_types_to_print = self.ext_types
         if not ext_types_to_print:
             ext_types_to_print = ['top', 'pdb', 'gro']
@@ -400,8 +409,9 @@ class Parameterize:
             f"out_dir = {self.out_dir})"
 
     def __call__(self,  input_mol, mol_resi_name: str = "MOL"):
-        """This class is callable. And this is its implementation.
-        it will return the specified files (ext_types in __init__) in the directory out_dir.
+        """Parameterize a molecule and write its topology files.
+
+        The files (``ext_types`` from ``__init__``) are written to ``out_dir``.
 
         Parameters
         ----------

@@ -77,3 +77,8 @@ where = ["src"]
 
 [project.scripts]
 parameterize = "toff.cli:__parameterize_cmd"
+
+[tool.pydocstyle]
+# NumPy docstring convention; also check test files (pydocstyle skips test_*.py by default)
+convention = "numpy"
+match = '.*\.py'

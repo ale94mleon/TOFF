@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""Tests for small-molecule parameterization with the Python API and the CLI."""
 import os
 import shutil
 import subprocess  # nosec B404 - only used to run TOFF's own CLI
@@ -42,6 +43,7 @@ with open(config_yml, 'w') as f:
 
 
 def test_Parameterize_openff():
+    """Parameterize every supported input type with OpenFF."""
     parameterizer = Parameterize(overwrite=True, out_dir=tmp_dir.name, force_field_type='openff')
     for key in valid_inputs:
         print(key)
@@ -49,6 +51,7 @@ def test_Parameterize_openff():
 
 
 def test_Parameterize_gaff():
+    """Parameterize every supported input type with GAFF."""
     parameterizer = Parameterize(overwrite=True, out_dir=tmp_dir.name, force_field_type='gaff')
     for key in valid_inputs:
         print(key)
@@ -57,6 +60,7 @@ def test_Parameterize_gaff():
 
 @pytest.mark.filterwarnings("ignore::Warning")  # Adjust the warning type as needed
 def test_Parameterize_espaloma():
+    """Parameterize every supported input type with Espaloma (skipped if it is not installed)."""
     pytest.importorskip("espaloma", reason="espaloma is not installed")
     parameterizer = Parameterize(overwrite=True, out_dir=tmp_dir.name, force_field_type='espaloma')
     for key in valid_inputs:
@@ -65,12 +69,14 @@ def test_Parameterize_espaloma():
 
 
 def test_Parameterize_hmr():
+    """Parameterize with hydrogen mass repartitioning."""
     parameterizer = Parameterize(overwrite=True, out_dir=tmp_dir.name, hmr_factor=2.5)
     parameterizer(input_mol=valid_inputs["rdkit"], mol_resi_name='HMR')
 
 
 @pytest.mark.parametrize("force_field_type", ["openff", "gaff", "espaloma"])
 def test_cmd_Parameterize(force_field_type):
+    """Run the ``parameterize`` CLI and check that it uses the requested force field."""
     if force_field_type == "espaloma":
         pytest.importorskip("espaloma", reason="espaloma is not installed")
     executable = shutil.which("parameterize")

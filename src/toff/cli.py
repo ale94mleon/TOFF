@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-For information of TOFF:
-    Docs: https://TOFF.readthedocs.io/en/latest/
-    Source Code: https://github.com/ale94mleon/TOFF
+"""Command line interface of TOFF (the ``parameterize`` command).
+
+Docs: https://TOFF.readthedocs.io/en/latest/
+Source Code: https://github.com/ale94mleon/TOFF
 """
 
 import argparse
