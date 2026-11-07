@@ -17,9 +17,9 @@ jobs:
       matrix:
         os: [ubuntu-latest, macOS-latest] #windows-latest
         python-version: ["3.11", "3.12"]
-        exclude:
-          - os: macOS-latest
-            python-version: '3.11'
+        # exclude:
+        #   - os: macOS-latest
+        #     python-version: '3.11'
     steps:
     - uses: actions/checkout@v4
     - name: Setup micromamba
