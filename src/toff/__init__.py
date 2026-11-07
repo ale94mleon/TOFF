@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Get topologies of small molecules from open force fields (OpenFF, GAFF and Espaloma).
+"""
+Get topologies of small molecules from open force fields (OpenFF, GAFF and Espaloma).
 
 Docs: https://TOFF.readthedocs.io/en/latest/
 Source Code: https://github.com/ale94mleon/TOFF

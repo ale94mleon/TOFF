@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The API reference was empty because autodoc could not import `toff.utils` in the docs environment; OpenMM, OpenFF and ParmEd are now mocked during the docs build.
 - License metadata is declared again (`License-Expression: Apache-2.0`, PEP 639); it was missing from PyPI since 0.2.0. The README license badge now uses shields.io.
 - The CLI test checks that the requested force field is used, for OpenFF, GAFF and Espaloma.
+- Docstrings follow the NumPy convention; corrected wrong parameter names and types in the API reference (`confgen`, `set_partial_charges`, `topology_writer`).
 
 ### Changed
 
