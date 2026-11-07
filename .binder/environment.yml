@@ -1,13 +1,18 @@
+# Environment for trying TOFF on Binder (https://mybinder.org reads .binder/environment.yml)
 name: toff
 channels:
   - conda-forge
+  - nodefaults
 dependencies:
+  - python=3.12
   - pip
-  - python==3.10
   - openmm
   - openff-toolkit
   - openmmforcefields
+  - parmed
+  - rdkit
+  - pyyaml
+  - matplotlib-base
+  - requests
   - pip:
     - toff
-    - requests
-    - matplotlib

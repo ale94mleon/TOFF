@@ -58,6 +58,12 @@ nb_execution_raise_on_error = True
 # nb_execution_timeout = -1
 # Do not execute the notebooks, they take too much time
 nb_execution_mode = 'off'
+
+# The API reference only needs TOFF's signatures and docstrings: mock the heavy
+# simulation stack instead of installing it in the docs environment.
+autodoc_mock_imports = ["openmm", "openff", "parmed"]
+# CHANGELOG repeats "Added"/"Changed"/... under every release
+suppress_warnings = ["autosectionlabel.source/CHANGELOG"]
 myst_heading_anchors = 6
 
 mathjax_path = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
