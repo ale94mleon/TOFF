@@ -14,6 +14,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v6
+    - name: Check that the tag matches the CHANGELOG
+      run: |
+        VERSION="${GITHUB_REF_NAME#v}"
+        if ! grep -q "^## \[${VERSION}\]" docs/source/CHANGELOG.md; then
+          echo "::error::Tag ${GITHUB_REF_NAME} has no '## [${VERSION}]' entry in docs/source/CHANGELOG.md"
+          exit 1
+        fi
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
