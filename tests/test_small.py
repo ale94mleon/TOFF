@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import os
-import subprocess  # nosec
+import shutil
+import subprocess  # nosec B404 - only used to run TOFF's own CLI
 import tempfile
 
 import pytest
@@ -56,10 +57,7 @@ def test_Parameterize_gaff():
 
 @pytest.mark.filterwarnings("ignore::Warning")  # Adjust the warning type as needed
 def test_Parameterize_espaloma():
-    try:
-        import espaloma
-    except Exception:
-        pytest.xfail("espaloma is not installed")
+    pytest.importorskip("espaloma", reason="espaloma is not installed")
     parameterizer = Parameterize(overwrite=True, out_dir=tmp_dir.name, force_field_type='espaloma')
     for key in valid_inputs:
         print(key)
@@ -71,13 +69,27 @@ def test_Parameterize_hmr():
     parameterizer(input_mol=valid_inputs["rdkit"], mol_resi_name='HMR')
 
 
-def test_cmd_Parameterize():
-    process = subprocess.run(
-        ['parameterize', config_yml],
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-    returncode = process.returncode
-    if returncode != 0:
+@pytest.mark.parametrize("force_field_type", ["openff", "gaff", "espaloma"])
+def test_cmd_Parameterize(force_field_type):
+    if force_field_type == "espaloma":
+        pytest.importorskip("espaloma", reason="espaloma is not installed")
+    executable = shutil.which("parameterize")
+    if executable is None:
+        pytest.fail("The 'parameterize' command is not on PATH; is TOFF installed?")
+
+    config = {**config_dict, 'force_field_type': force_field_type, 'mol_resi_name': force_field_type[:3].upper()}
+    config_file = os.path.join(tmp_dir.name, f'config_{force_field_type}.yml')
+    with open(config_file, 'w') as f:
+        yaml.dump(config, f)
+
+    # Full path to TOFF's own entry point, no shell, no external input
+    process = subprocess.run([executable, config_file], capture_output=True, text=True, check=False)  # nosec B603
+    if process.returncode != 0:
         raise RuntimeError(process.stderr)
+    # Regression test: older CLIs dropped force_field_type and silently used OpenFF
+    if f"Parameterizing with {force_field_type}" not in process.stdout:
+        pytest.fail(f"The CLI did not use {force_field_type}. Its output was:\n{process.stdout}")
+
 
 if __name__ == '__main__':
     pass

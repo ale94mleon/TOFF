@@ -324,7 +324,7 @@ def generate_structure(rdkit_mol: Chem.rdchem.Mol, force_field_type: str = 'open
         # create an OpenMM System for the specified molecule
         system = esp.graphs.deploy.openmm_system_from_graph(molecule_graph)
     else:
-        raise ValueError(f"{force_field_type} is not valid, select from {force_field_code_default.keys()}")
+        raise ValueError(f"{force_field_type=} is not valid. Choose from: {list(force_field_code_default)}.")
 
     structure = parmed.openmm.load_topology(pdb_obj.topology, system=system, xyz=pdb_obj.positions)
     tmp_pdb.close()

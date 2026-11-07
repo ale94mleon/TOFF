@@ -6,7 +6,12 @@ For information of TOFF:
     Source Code: https://github.com/ale94mleon/TOFF
 """
 from toff._version import __version__
-from toff.utils import *
+from toff.utils import (Parameterize)
+
+__all__ = [
+    "__version__",
+    "Parameterize",
+]
 
 __author__ = "Alejandro Martínez León"
 __email__ = "ale94mleon@gmail.com"
