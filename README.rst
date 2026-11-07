@@ -115,8 +115,8 @@ This project received funding from `Marie Skłodowska-Curie Actions <https://cor
     :target: https://parmed.github.io/ParmEd/html/'
     :alt: ParmEd
 
-..  |license| image:: https://badgen.net/pypi/license/toff/
-    :target: https://pypi.python.org/pypi/toff/
+..  |license| image:: https://img.shields.io/pypi/l/toff
+    :target: https://pypi.org/project/toff/
     :alt: license
 
 ..  |downloads| image:: https://static.pepy.tech/personalized-badge/toff?period=total&units=international_system&left_color=grey&right_color=brightgreen&left_text=Downloads

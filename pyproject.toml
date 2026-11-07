@@ -16,6 +16,8 @@ name = "toff"
 dynamic = ["version"]
 description = "toff is a python package to get topologies from open force fields."
 readme = "README.rst"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 
 authors=[
     {name="Alejandro Martínez León", email="ale94mleon@gmail.com"},
