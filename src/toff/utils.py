@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Build topologies of small molecules with the OpenFF, GAFF and Espaloma force fields.
+"""Build topologies of small molecules with the OpenFF, GAFF and Espaloma force fields.
 
 This module was strongly inspired by
 https://github.com/aniketsh/OpenFF/blob/82a2b5803e36b72f3525e3b8631cf256fbd8e35a/openff_topology.py
