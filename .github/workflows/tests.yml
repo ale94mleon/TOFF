@@ -38,6 +38,12 @@ jobs:
         cache-environment: true
         post-cleanup: 'environment'
         generate-run-shell: true
+    - name: Clear executable-stack flag from old PyTorch builds (glibc >= 2.41)
+      if: runner.os == 'Linux'
+      shell: bash -l {0}
+      run: |
+        source /home/runner/work/_temp/setup-micromamba/ci-run.sh
+        patchelf --clear-execstack "$CONDA_PREFIX/lib/libtorch_cpu.so"
     - name: Install pip dependencies and toff on dev mode
       shell: bash -l {0}
       run: |
