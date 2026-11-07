@@ -12,15 +12,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - The `parameterize` command line interface now accepts `force_field_type` in the configuration YAML file. Previously it was discarded with a warning, so GAFF and Espaloma could not be selected from the CLI.
+- The API reference was empty because autodoc could not import `toff.utils` in the docs environment; OpenMM, OpenFF and ParmEd are now mocked during the docs build.
+
 
 ### Changed
 
 - Minimum supported Python version is now 3.11 (`requires-python = ">=3.11"`).
 - CI tests run on Python 3.11 and 3.12; coverage and the PyPI publishing workflow use Python 3.11.
+- Documentation is built with Python 3.12 and current Sphinx instead of Python 3.9 and Sphinx 7.2.6; Read the Docs uses `mambaforge-latest`.
+- The Binder environment uses Python 3.12.
 
 ### Removed
 
 - Support for Python 3.9 and 3.10. Both versions have reached end of life, and recent OpenFF packages (`openff-amber-ff-ports >= 2025.09.0`) require Python >= 3.11. On Python 3.10 the solver falls back to `openff-amber-ff-ports 0.0.4`, which imports `pkg_resources`, removed from setuptools in version 82; this made parameterization with OpenFF fail with `ModuleNotFoundError: No module named 'pkg_resources'`.
+- Unused `requirements_docs.txt`.
 
 ## [0.2.1]-2025.09.26
 
