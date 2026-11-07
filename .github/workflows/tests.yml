@@ -16,10 +16,10 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macOS-latest] #windows-latest
-        python-version: ['3.9', '3.10', "3.11", "3.12"]
+        python-version: ["3.11", "3.12"]
         exclude:
           - os: macOS-latest
-            python-version: '3.9'
+            python-version: '3.11'
     steps:
     - uses: actions/checkout@v4
     - name: Setup micromamba
@@ -33,7 +33,7 @@ jobs:
           openmmforcefields
           importlib-resources
           parmed
-          espaloma=0.3.2
+          espaloma>=0.3.2
         init-shell: bash
         cache-environment: true
         post-cleanup: 'environment'

@@ -7,11 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
-## [0.2.2]-2026.11.07
+## [0.3.0]-2026.11.07
 
-### Added
+### Fixed
 
-- `force_field_type` to CLI.
+- The `parameterize` command line interface now accepts `force_field_type` in the configuration YAML file. Previously it was discarded with a warning, so GAFF and Espaloma could not be selected from the CLI.
+
+### Changed
+
+- Minimum supported Python version is now 3.11 (`requires-python = ">=3.11"`).
+- CI tests run on Python 3.11 and 3.12; coverage and the PyPI publishing workflow use Python 3.11.
+
+### Removed
+
+- Support for Python 3.9 and 3.10. Both versions have reached end of life, and recent OpenFF packages (`openff-amber-ff-ports >= 2025.09.0`) require Python >= 3.11. On Python 3.10 the solver falls back to `openff-amber-ff-ports 0.0.4`, which imports `pkg_resources`, removed from setuptools in version 82; this made parameterization with OpenFF fail with `ModuleNotFoundError: No module named 'pkg_resources'`.
 
 ## [0.2.1]-2025.09.26
 
@@ -82,7 +91,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Improve documentation
 
-[unreleased]: https://github.com/ale94mleon/TOFF/compare/0.2.1...HEAD
+[unreleased]: https://github.com/ale94mleon/TOFF/compare/0.3.0...HEAD
+[0.3.0]: https://github.com/ale94mleon/TOFF/compare/0.3.0...0.2.1
 [0.2.1]: https://github.com/ale94mleon/TOFF/compare/0.2.1...0.2.0
 [0.2.0]: https://github.com/ale94mleon/TOFF/compare/0.1.0...0.2.0
 [0.1.0]: https://github.com/ale94mleon/TOFF/compare/0.0.2...0.1.0
