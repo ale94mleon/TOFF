@@ -20,7 +20,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, macos-15-intel]
+        # macOS Intel (macos-15-intel) is disabled (2026-11): conda-forge's antechamber randomly reads
+        # zero atoms from SDF on osx-64 (AmberTools 24.8 and 26.0), which breaks every AM1-BCC charge
+        # calculation (GAFF and OpenFF alike). To re-check, add macos-15-intel back to `os` and uncomment
+        # its `include` entry and the "antechamber diagnostics" step below.
+        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest]
         python-version: ["3.11", "3.12"]
         include:
           - os: ubuntu-latest
@@ -32,12 +36,9 @@ jobs:
           - os: macos-latest
             name: macOS Apple Silicon
             espaloma: true
-          # Known issue (2026-11): GAFF tests are xfail here. conda-forge's antechamber randomly reads
-          # zero atoms from SDF on osx-64 (AmberTools 24.8 and 26.0); see the marker in tests/test_small.py
-          # and the commented-out "antechamber diagnostics" step below to re-check.
-          - os: macos-15-intel
-            name: macOS Intel
-            espaloma: true
+          # - os: macos-15-intel
+          #   name: macOS Intel
+          #   espaloma: true
     steps:
     - uses: actions/checkout@v6
     - name: Setup micromamba

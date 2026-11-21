@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- CI tests run on Linux x86_64, Linux ARM, macOS Apple Silicon and macOS Intel. Espaloma is not tested on Linux ARM because `dgl` is not built for linux-aarch64.
+- CI tests run on Linux x86_64, Linux ARM and macOS Apple Silicon (macOS Intel is disabled; see Known issues). Espaloma is not tested on Linux ARM because `dgl` is not built for linux-aarch64.
 - Dev container (`.devcontainer/`) with the micromamba environment, TOFF in editable mode, the test and docs tools, and Claude Code. It always runs as linux/amd64 (emulated on Apple Silicon) so that Espaloma is available.
 - `.github/scripts/antechamber-diagnostics.sh`: standalone reproducer for antechamber failures (disabled in CI; see Known issues).
 
@@ -20,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Known issues
 
-- GAFF parameterization fails intermittently on macOS Intel (osx-64): conda-forge's `antechamber` randomly reads zero atoms from a valid SDF file (about 20-25% of calls, AmberTools 24.8 and 26.0). It fails either with a `CalledProcessError` from the AM1-BCC charge step or with `KeyError: ''` from OpenMM. This is an upstream bug; Linux and Apple Silicon are not affected. The GAFF tests are marked as expected failures on that platform.
+- Parameterization fails intermittently on macOS Intel (osx-64): conda-forge's `antechamber` randomly reads zero atoms from a valid SDF file (about 20-25% of calls, AmberTools 24.8 and 26.0). This affects every AM1-BCC charge calculation, so both GAFF and OpenFF (without OpenEye) are hit. It fails either with a `CalledProcessError` from the AM1-BCC charge step or with `KeyError: ''` from OpenMM. This is an upstream bug; Linux and Apple Silicon are not affected. macOS Intel is removed from the CI matrix until it is fixed.
 
 ## [0.3.0]-2026.11.07
 

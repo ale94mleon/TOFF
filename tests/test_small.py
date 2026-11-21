@@ -17,8 +17,9 @@ from toff import Parameterize
 # atoms from a valid SDF (~20-25% of calls, AmberTools 24.8 and 26.0 alike). GAFF needs antechamber twice
 # (AM1-BCC charges, GAFF2 atom types), so it fails intermittently: either antechamber exits with 1, or it
 # writes an empty mol2 and OpenMM raises KeyError: ''. Not a TOFF bug; Linux and Apple Silicon are fine.
-# Reproducer: .github/scripts/antechamber-diagnostics.sh. Not strict, so a fixed build just shows XPASS;
-# once it passes reliably on macOS Intel in CI, remove this marker.
+# OpenFF (AM1-BCC via antechamber without OpenEye) is hit too, so macOS Intel is also out of the CI matrix;
+# this marker only helps local runs there. Reproducer: .github/scripts/antechamber-diagnostics.sh.
+# Not strict, so a fixed build just shows XPASS; once it passes reliably on macOS Intel, remove this marker.
 xfail_gaff_macos_intel = pytest.mark.xfail(
     platform.system() == "Darwin" and platform.machine() == "x86_64",
     reason="antechamber on macOS Intel (osx-64) randomly reads zero atoms from SDF input; upstream bug",
