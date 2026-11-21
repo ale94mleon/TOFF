@@ -1,0 +1,39 @@
+{
+	"name": "toff",
+	"build": {
+		"context": "..",
+		"dockerfile": "Dockerfile",   // relative to devcontainer.json
+		// Always x86_64, also on Apple Silicon (emulated): Espaloma needs dgl, which conda-forge
+		// does not build for linux-aarch64. Enable Rosetta in Docker Desktop for good speed.
+		"options": ["--platform=linux/amd64"]
+	},
+	"runArgs": ["--platform=linux/amd64"],
+
+	"remoteUser": "user",
+
+	"mounts": [
+		"source=claude-code-config-${devcontainerId},target=/home/user/.claude,type=volume"
+	],
+	"containerEnv": {
+		"CLAUDE_CONFIG_DIR": "/home/user/.claude",
+		// The image only ships C.UTF-8; a host locale forwarded by VS Code (e.g. en_US.UTF-8)
+		// makes locale.setlocale(LC_ALL, '') fail, which breaks sphinx-build.
+		"LC_ALL": "C.UTF-8"
+	},
+
+	// Creates the toff env and installs TOFF in editable mode (needs the mounted repo)
+	"postCreateCommand": "bash .devcontainer/post-create.sh",
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"anthropic.claude-code",
+				"ms-python.python",
+				"ms-toolsai.jupyter"
+			],
+			"settings": {
+				"python.defaultInterpreterPath": "/home/user/micromamba/envs/toff/bin/python"
+			}
+		}
+	}
+}
