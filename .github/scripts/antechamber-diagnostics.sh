@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-# Minimal antechamber reproducer, independent of TOFF/OpenFF: RDKit writes ethane, antechamber reads it.
-# Used in CI to investigate GAFF failing on macOS Intel (antechamber passes zero atoms to sqm).
+# Minimal antechamber reproducer: RDKit/OpenFF write ethane, antechamber reads it (as OpenFF/openmmforcefields do).
+# Written to investigate GAFF failing on macOS Intel: there antechamber randomly reads zero atoms from a
+# valid SDF (2026-11: ~20-25% of calls, AmberTools 24.8 and 26.0). Disabled in CI; to re-check, uncomment its
+# step in .github/workflows/tests.yml.
 # Portable to macOS (BSD tools): uses `od -c`, not `cat -A`. Never aborts: every step reports and continues.
 # Run with the conda environment active (needs $CONDA_PREFIX, python with rdkit, and ambertools).
 set -u

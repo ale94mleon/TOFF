@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """Tests for small-molecule parameterization with the Python API and the CLI."""
 import os
+import platform
 import shutil
 import subprocess  # nosec B404 - only used to run TOFF's own CLI
 import tempfile
@@ -11,6 +12,18 @@ import yaml
 from rdkit import Chem
 
 from toff import Parameterize
+
+# Known upstream bug (2026-11): on macOS Intel (osx-64), conda-forge's antechamber randomly reads zero
+# atoms from a valid SDF (~20-25% of calls, AmberTools 24.8 and 26.0 alike). GAFF needs antechamber twice
+# (AM1-BCC charges, GAFF2 atom types), so it fails intermittently: either antechamber exits with 1, or it
+# writes an empty mol2 and OpenMM raises KeyError: ''. Not a TOFF bug; Linux and Apple Silicon are fine.
+# Reproducer: .github/scripts/antechamber-diagnostics.sh. Not strict, so a fixed build just shows XPASS;
+# once it passes reliably on macOS Intel in CI, remove this marker.
+xfail_gaff_macos_intel = pytest.mark.xfail(
+    platform.system() == "Darwin" and platform.machine() == "x86_64",
+    reason="antechamber on macOS Intel (osx-64) randomly reads zero atoms from SDF input; upstream bug",
+    strict=False,
+)
 
 tmp_dir = tempfile.TemporaryDirectory(dir=".", prefix="toff-test-")
 
@@ -50,6 +63,7 @@ def test_Parameterize_openff():
         parameterizer(input_mol=valid_inputs[key], mol_resi_name=key[:3])
 
 
+@xfail_gaff_macos_intel
 def test_Parameterize_gaff():
     """Parameterize every supported input type with GAFF."""
     parameterizer = Parameterize(overwrite=True, out_dir=tmp_dir.name, force_field_type='gaff')
@@ -74,7 +88,9 @@ def test_Parameterize_hmr():
     parameterizer(input_mol=valid_inputs["rdkit"], mol_resi_name='HMR')
 
 
-@pytest.mark.parametrize("force_field_type", ["openff", "gaff", "espaloma"])
+@pytest.mark.parametrize(
+    "force_field_type", ["openff", pytest.param("gaff", marks=xfail_gaff_macos_intel), "espaloma"]
+)
 def test_cmd_Parameterize(force_field_type):
     """Run the ``parameterize`` CLI and check that it uses the requested force field."""
     if force_field_type == "espaloma":

@@ -32,6 +32,9 @@ jobs:
           - os: macos-latest
             name: macOS Apple Silicon
             espaloma: true
+          # Known issue (2026-11): GAFF tests are xfail here. conda-forge's antechamber randomly reads
+          # zero atoms from SDF on osx-64 (AmberTools 24.8 and 26.0); see the marker in tests/test_small.py
+          # and the commented-out "antechamber diagnostics" step below to re-check.
           - os: macos-15-intel
             name: macOS Intel
             espaloma: true
@@ -77,12 +80,12 @@ jobs:
     - name: Environment details
       if: always()
       run: micromamba list
-    # Temporary: investigate GAFF failing on macOS Intel (antechamber reads no atoms).
-    # Runs on every platform so the working ones serve as reference; never fails the job.
-    - name: antechamber diagnostics
-      if: always()
-      continue-on-error: true
-      run: bash .github/scripts/antechamber-diagnostics.sh
+    # Disabled (2026-11): reproducer for the macOS Intel antechamber bug (see the matrix comment above).
+    # Uncomment to re-check: its stress test reports failures out of 20 runs; never fails the job.
+    # - name: antechamber diagnostics
+    #   if: always()
+    #   continue-on-error: true
+    #   run: bash .github/scripts/antechamber-diagnostics.sh
     - name: Run codacy-coverage-reporter
       uses: codacy/codacy-coverage-reporter-action@v1.3.0
       if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
